@@ -1,0 +1,25 @@
+{
+  "fagsaker": [
+    {{#each parameters.fagsaker}}
+    {
+      "fagsakEiersIdent": "{{eier}}",
+      "barnetrygdPerioder": [
+        {{#each perioder}}
+        {
+          "personIdent": "{{personIdent}}",
+          "delingsprosentYtelse": "{{delingsProsentYtelse}}",
+          "ytelseTypeEkstern": "{{ytelsestype}}",
+          "utbetaltPerMnd": {{utbetaltPerMnd}},
+        "stønadFom": "{{stønadFom}}",
+        "stønadTom": "{{stønadTom}}",
+        "sakstypeEkstern": "NASJONAL",
+        "kildesystem": "BA",
+        "pensjonstrygdet": null,
+        "norgeErSekundærlandMedNullUtbetaling": false
+        }{{#unless @last}},{{/unless}}
+        {{/each}}
+      ]
+    }{{#unless @last}},{{/unless}}
+    {{/each}}
+  ]
+}
