@@ -4,3 +4,11 @@
 
 # Log file
 *.log
+
+# folders
+build
+.gradle
+.idea
+
+# unused files
+gradlew.bat
