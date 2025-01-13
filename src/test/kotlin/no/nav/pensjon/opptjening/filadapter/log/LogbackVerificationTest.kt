@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.filadapter
+package no.nav.pensjon.opptjening.filadapter.log
 
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.OutputStreamAppender

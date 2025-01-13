@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.filadapter.remote
+package no.nav.pensjon.opptjening.filadapter.remote.popp
 
 import java.io.InputStream
 import java.util.*
