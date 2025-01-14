@@ -28,11 +28,11 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       # SETTER IMAGE VARIABEL
       - name: 'Setting Image Variabel'
-        run: echo "IMAGE=docker.pkg.github.com/${{ github.repository }}/omsorgsopptjening-start-innlesning:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
+        run: echo "IMAGE=docker.pkg.github.com/${{ github.repository }}/pensjon-opptjening-filadapter:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # SETTER IMAGE GHCR VARIABEL
       - name: 'Setting Image ghcr Variabel'
-        run: echo "IMAGE_GHCR=ghcr.io/${{ github.repository }}/omsorgsopptjening-start-innlesning:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
+        run: echo "IMAGE_GHCR=ghcr.io/${{ github.repository }}/pensjon-opptjening-filadapter:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # JAVA 21
       - name: 'Java 21'
