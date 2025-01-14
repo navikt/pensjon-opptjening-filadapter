@@ -19,6 +19,9 @@ val unleashVersion = "9.2.6"
 val jsonUnitVersion = "4.1.0"
 val guavaVersion = "33.4.0-jre"
 val jschVersion = "0.2.22"
+// val httpClient5Version = "5.3.1" // TODO: 5.4 feiler med NoClassDefFoundError
+val httpClient5Version = "5.4.1"
+val hibernateValidatorVersion = "8.0.1.Final"
 
 val snappyJavaVersion = "1.1.10.7"
 val snakeYamlVersion = "2.3"
@@ -65,6 +68,9 @@ dependencies {
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClient")
     implementation("io.getunleash:unleash-client-java:$unleashVersion")
     implementation("com.google.guava:guava:$guavaVersion")
+
+    implementation("org.apache.httpcomponents.client5:httpclient5:$httpClient5Version")
+    implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
 
     // DB
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")

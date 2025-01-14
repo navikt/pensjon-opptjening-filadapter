@@ -2,33 +2,35 @@ package no.nav.pensjon.opptjening.filadapter.remote.popp
 
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.mapToObject
+import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.toJson
 import no.nav.popp.web.api.endpoint.fil.model.LagreFilRequest
 import no.nav.popp.web.api.endpoint.fil.model.LagreFilResponse
 import no.nav.popp.web.api.endpoint.fil.model.ValiderFilRequest
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.toEntity
+import org.springframework.web.client.RestTemplate
 import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.io.InputStream
 import java.util.*
 
 @Component
 class PoppClientImpl(
-    @Qualifier("poppFilTokenProvider") private val tokenProvider: TokenProvider,
-    @Value("\${POPP_FIL_URL}") private val url: String,
+    @Qualifier("poppTokenProvider") private val tokenProvider: TokenProvider,
+    @Value("\${POPP_URL}") private val baseUrl: String,
 //    private val metrikker: Metrikker,
-    webClientBuilder: WebClient.Builder,
+    private val restTemplate: RestTemplate,
 ) : PoppClient {
 
     companion object {
         private val log = NAVLog(PoppClientImpl::class)
     }
 
-    val webClient: WebClient = webClientBuilder.baseUrl("http://localhost:9991/xxxx").build()
+//    val webClient: WebClient = webClientBuilder.baseUrl("http://localhost:9991/xxxx").build()
 
     override fun lagreFil(fil: InputStream): UUID {
         log.open.info("Lagrer fil")
@@ -44,18 +46,23 @@ class PoppClientImpl(
     }
 
     fun lagreFil(request: LagreFilRequest): LagreFilResponse {
-        val result = webClient
-            .post()
-            .uri(url)
-            .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenProvider.getToken())
-            .retrieve()
-//                .onStatus(not200()) { Mono.empty() }
-            .toEntity<String>()
-            .block()
+        val url = "$baseUrl/fil/opprett"
+        val response = restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            HttpEntity(
+                request.toJson(),
+                HttpHeaders().apply {
+                    accept = listOf(MediaType.APPLICATION_JSON)
+                    contentType = MediaType.APPLICATION_JSON
+                    setBearerAuth(tokenProvider.getToken())
+                }
+            ),
+            String::class.java
+        )
 
         try {
-            return result?.body
+            return response.body
                 ?.mapToObject(LagreFilResponse::class.java)
                 ?: throw PoppClientException.LagreFilFeilet("Response var null", null)
         } catch (ex: Throwable) {
