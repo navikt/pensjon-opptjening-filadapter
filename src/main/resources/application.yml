@@ -17,4 +17,7 @@ no.nav.security.jwt:
       discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
       accepted_audience: ${AZURE_APP_CLIENT_ID}
 
+spring.datasource:
+  url: ${DATABASE_JDBC_URL}
+
 POPP_URL: http://localhost:9991/popp/api

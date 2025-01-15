@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
-@Configuration
-@Profile("dev-gcp", "prod-gcp")
+// @Configuration
+// @Profile("dev-gcp", "prod-gcp")
 class DatasourceConfig {
 
     @Bean
