@@ -23,6 +23,7 @@ class PostgresqlTestContainer private constructor(image: String) : PostgreSQLCon
     }
 
     fun removeDataFromDB() {
+        println("Removing all data from DB")
         removeDataFromDB(dataSource)
     }
 
