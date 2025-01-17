@@ -26,6 +26,7 @@ val hibernateValidatorVersion = "8.0.1.Final"
 
 val snappyJavaVersion = "1.1.10.7"
 val snakeYamlVersion = "2.3"
+val apacheSshdVersion = "2.10.0"
 
 plugins {
     val kotlinVersion = "2.0.21"
@@ -72,6 +73,9 @@ dependencies {
 
     implementation("org.apache.httpcomponents.client5:httpclient5:$httpClient5Version")
     implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
+
+    implementation("org.apache.sshd:sshd-core:$apacheSshdVersion")
+    implementation("org.apache.sshd:sshd-sftp:$apacheSshdVersion")
 
     // DB
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
