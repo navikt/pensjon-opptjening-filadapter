@@ -1,10 +1,10 @@
 package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
-import com.jcraft.jsch.JSch
-import com.jcraft.jsch.Session
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.nio.file.Paths
 
 class FilsluseClientTest {
 
@@ -30,7 +30,16 @@ class FilsluseClientTest {
 
     @Test
     fun test1() {
-        println("FOO")
+        println("port: ${sftpServer.getPort()}")
+        val remoteFiles = FilsluseClientImpl(
+            host = "127.0.0.1",
+            port = sftpServer.getPort(),
+            username = "test",
+            privateKeyPath = Paths.get(
+                this::class.java.getResource("/test_id_client_rsa")!!.toURI()
+            ),
+        ).scanForFiles("/")
+        println("remoteFiles: $remoteFiles")
+        assertThat(remoteFiles).contains(RemoteFilInfo("testfile.txt"))
     }
-
 }

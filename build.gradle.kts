@@ -7,7 +7,7 @@ val navTokenSupportVersion = "5.0.14"
 val logbackEncoderVersion = "8.0"
 val postgresqlVersion = "42.7.5"
 // val flywayCoreVersion = "11.1.1"
-val flywayCoreVersion = "10.20.1"
+val flywayCoreVersion = "11.2.0"
 val testcontainersVersion = "1.20.4"
 val jacksonVersion = "2.18.2"
 val azureAdClient = "0.0.7"
@@ -26,10 +26,10 @@ val hibernateValidatorVersion = "8.0.1.Final"
 
 val snappyJavaVersion = "1.1.10.7"
 val snakeYamlVersion = "2.3"
-val apacheSshdVersion = "2.10.0"
+val apacheSshdVersion = "2.14.0"
 
 plugins {
-    val kotlinVersion = "2.0.21"
+    val kotlinVersion = "2.1.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "3.4.1"

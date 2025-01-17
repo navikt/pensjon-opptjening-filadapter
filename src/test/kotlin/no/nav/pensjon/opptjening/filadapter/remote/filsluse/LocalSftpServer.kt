@@ -11,7 +11,6 @@ import java.nio.file.Paths
 import java.security.PublicKey
 
 class LocalSftpServer(
-    val port: Int,
     val hostKeyPath: Path,
     val authorizedKeysPath: Path,
     val sftpRootDir: Path,
@@ -29,8 +28,9 @@ class LocalSftpServer(
 
         val sshServer = SshServer.setUpDefaultServer().apply {
             port = port
+            host = "127.0.0.1"
             keyPairProvider = SimpleGeneratorHostKeyProvider(hostKeyPath)
-            publickeyAuthenticator = PublickeyAuthenticator { username, key, session ->
+            publickeyAuthenticator = PublickeyAuthenticator { _, key, _ ->
                 isKeyAuthorized(key, authorizedKeysPath)
             }
             subsystemFactories = listOf(SftpSubsystemFactory())
@@ -48,18 +48,20 @@ class LocalSftpServer(
     }
 
     private fun isKeyAuthorized(key: PublicKey, path: Path): Boolean {
+        println("isKeyAuthorized: $key, $path")
         val authorizedKeys = Files.readAllLines(authorizedKeysPath)
         val keyString = key.encoded.joinToString(separator = "") {
             String.format("%02x", it)
         }
-        return false
+        return true
     }
+
+    fun getPort() : Int = sshServer.port
 
     companion object {
         fun default() = LocalSftpServer(
-            port = 9999,
             hostKeyPath = Paths.get(Companion::class.java.getResource("/test_id_rsa")!!.toURI()),
-            authorizedKeysPath = Paths.get(Companion::class.java.getResource("/test_id_client_rsa.pub")!!.toURI()),
+            authorizedKeysPath = Paths.get(Companion::class.java.getResource("/test_authorized_keys")!!.toURI()),
             sftpRootDir = Paths.get(Companion::class.java.getResource("/sftp_files")!!.toURI()),
         )
     }
