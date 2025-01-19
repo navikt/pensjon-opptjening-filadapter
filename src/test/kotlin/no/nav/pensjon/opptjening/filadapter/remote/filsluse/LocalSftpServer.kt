@@ -1,14 +1,16 @@
 package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
 import org.apache.sshd.common.file.virtualfs.VirtualFileSystemFactory
+import org.apache.sshd.common.util.security.SecurityUtils
 import org.apache.sshd.server.SshServer
 import org.apache.sshd.server.auth.pubkey.PublickeyAuthenticator
+import org.apache.sshd.server.config.keys.AuthorizedKeysAuthenticator
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider
 import org.apache.sshd.sftp.server.SftpSubsystemFactory
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.security.PublicKey
+import kotlin.io.path.readBytes
 
 class LocalSftpServer(
     val hostKeyPath: Path,
@@ -30,9 +32,12 @@ class LocalSftpServer(
             port = port
             host = "127.0.0.1"
             keyPairProvider = SimpleGeneratorHostKeyProvider(hostKeyPath)
-            publickeyAuthenticator = PublickeyAuthenticator { _, key, _ ->
+            publickeyAuthenticator = AuthorizedKeysAuthenticator(TestSftpConfig.authorizedKeys)
+            /*
+                PublickeyAuthenticator { _, key, _ ->
                 isKeyAuthorized(key, authorizedKeysPath)
             }
+             */
             subsystemFactories = listOf(SftpSubsystemFactory())
             fileSystemFactory = VirtualFileSystemFactory(sftpRootDir)
         }
@@ -53,16 +58,17 @@ class LocalSftpServer(
         val keyString = key.encoded.joinToString(separator = "") {
             String.format("%02x", it)
         }
+        val publicKey = TestSftpConfig.clientPublic.readBytes()
         return true
     }
 
-    fun getPort() : Int = sshServer.port
+    fun getPort(): Int = sshServer.port
 
     companion object {
         fun default() = LocalSftpServer(
-            hostKeyPath = Paths.get(Companion::class.java.getResource("/test_id_rsa")!!.toURI()),
-            authorizedKeysPath = Paths.get(Companion::class.java.getResource("/test_authorized_keys")!!.toURI()),
-            sftpRootDir = Paths.get(Companion::class.java.getResource("/sftp_files")!!.toURI()),
+            hostKeyPath = TestSftpConfig.serverPrivate,
+            authorizedKeysPath = TestSftpConfig.authorizedKeys,
+            sftpRootDir = TestSftpConfig.sftpFilePath,
         )
     }
 
