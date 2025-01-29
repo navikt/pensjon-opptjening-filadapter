@@ -51,7 +51,7 @@ class LocalSftpServer(
         val keyString = key.encoded.joinToString(separator = "") {
             String.format("%02x", it)
         }
-        val publicKey = TestSftpConfig.clientPublic.readBytes()
+        val publicKey = TestSftpConfig.clientPublic.toByteArray(Charsets.UTF_8)
         return true
     }
 

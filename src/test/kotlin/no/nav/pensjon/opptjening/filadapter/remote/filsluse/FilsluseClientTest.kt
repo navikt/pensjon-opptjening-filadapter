@@ -11,6 +11,9 @@ class FilsluseClientTest {
 
     companion object {
 
+        val sshClientPrivateKey = ""
+        val sshClientPassword = null
+
         @JvmStatic
         val sftpServer = LocalSftpServer.default()
 
@@ -61,7 +64,8 @@ class FilsluseClientTest {
             host = "127.0.0.1",
             port = sftpServer.getPort(),
             username = "test",
-            privateKeyPath = TestSftpConfig.clientPrivate
+            privateKey = TestSftpConfig.clientPrivate,
+            privateKeyPassword = "password",
         )
     }
 }

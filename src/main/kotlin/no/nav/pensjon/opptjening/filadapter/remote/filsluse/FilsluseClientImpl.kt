@@ -3,14 +3,14 @@ package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
 import java.io.InputStream
-import java.nio.file.Path
-import kotlin.io.path.readBytes
+import java.nio.charset.StandardCharsets
 
 class FilsluseClientImpl(
     val host: String,
     val port: Int,
     val username: String,
-    val privateKeyPath: Path,
+    val privateKey: String,
+    val privateKeyPassword: String,
 ) : FilsluseClient {
 
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
@@ -28,9 +28,14 @@ class FilsluseClientImpl(
     }
 
     private fun connectAndOpenSftpChannel(jsch: JSch): ChannelSftp {
-        println("privateKeyPath: $privateKeyPath")
-        val privateKey = privateKeyPath.readBytes()
-        jsch.addIdentity("pensjon-opptjening-filadapter", privateKey, null, null)
+        println("privateKeyPath: $privateKey")
+        val privateKey = privateKey.toByteArray(StandardCharsets.UTF_8)
+        jsch.addIdentity(
+            "pensjon-opptjening-filadapter",
+            privateKey,
+            null,
+            privateKeyPassword.toByteArray(StandardCharsets.UTF_8)
+        )
         val session = jsch.getSession(username, host, port)
         session.setConfig("StrictHostKeyChecking", "no")
         session.connect()

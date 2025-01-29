@@ -36,6 +36,12 @@ spec:
       value: https://pensjon-popp-q2.dev-fss-pub.nais.io/popp/api
     - name: POPP_API_ID
       value: dev-fss.pensjonopptjening.pensjon-popp-q2
+    - name: FILSLUSE_HOST
+      value: filmottak.preprod.local
+    - name: FILSLUSE_PORT
+      value: "22"
+    - name: FILSLUSE_USERNAME
+      value: srvPopp
   envFrom:
     - secret: unleash-api-token
     - secret: filadapter-sshkey
