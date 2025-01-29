@@ -1,9 +1,7 @@
 package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
 import org.apache.sshd.common.file.virtualfs.VirtualFileSystemFactory
-import org.apache.sshd.common.util.security.SecurityUtils
 import org.apache.sshd.server.SshServer
-import org.apache.sshd.server.auth.pubkey.PublickeyAuthenticator
 import org.apache.sshd.server.config.keys.AuthorizedKeysAuthenticator
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider
 import org.apache.sshd.sftp.server.SftpSubsystemFactory
@@ -33,11 +31,6 @@ class LocalSftpServer(
             host = "127.0.0.1"
             keyPairProvider = SimpleGeneratorHostKeyProvider(hostKeyPath)
             publickeyAuthenticator = AuthorizedKeysAuthenticator(TestSftpConfig.authorizedKeys)
-            /*
-                PublickeyAuthenticator { _, key, _ ->
-                isKeyAuthorized(key, authorizedKeysPath)
-            }
-             */
             subsystemFactories = listOf(SftpSubsystemFactory())
             fileSystemFactory = VirtualFileSystemFactory(sftpRootDir)
         }

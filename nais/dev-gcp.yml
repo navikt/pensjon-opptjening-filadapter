@@ -38,6 +38,7 @@ spec:
       value: dev-fss.pensjonopptjening.pensjon-popp-q2
   envFrom:
     - secret: unleash-api-token
+    - secret: filadapter-sshkey
   image: {{ image }}
   ingresses:
     - https://pensjon-opptjening-filadapter.intern.dev.nav.no

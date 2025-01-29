@@ -1,9 +1,11 @@
 package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import kotlin.io.path.readBytes
 
 class FilsluseClientTest {
 
@@ -28,24 +30,38 @@ class FilsluseClientTest {
     }
 
     @Test
-    fun test1() {
+    fun `kan liste filer på sftp-serveren`() {
         println("port: ${sftpServer.getPort()}")
         val remoteFiles = sftpClient(sftpServer).scanForFiles("/")
         println("remoteFiles: $remoteFiles")
         assertThat(remoteFiles).contains(RemoteFilInfo("testfile.txt"))
     }
 
-    private fun sftpClient(sftpServer: LocalSftpServer) : FilsluseClient {
+    @Test
+    fun `kan laste ned en fil som finnes`() {
+        val forventetInnhold = TestSftpConfig.sftpFilePath.resolve("testfile.txt").readBytes()
+        println("port: ${sftpServer.getPort()}")
+        val file = sftpClient(sftpServer).downloadFile("testfile.txt")
+        assertThat(file).isNotNull()
+        val nedlastetFil = file.readBytes()
+        assertThat(nedlastetFil).isEqualTo(forventetInnhold)
+    }
+
+    @Test
+    fun `feiler ved nedlasting av fil som ikke finnes`() {
+        assertThatThrownBy {
+            val file = sftpClient(sftpServer).downloadFile("banan.txt")
+        }
+            .isInstanceOf(FilsluseClientImpl.SftpClientException.NoSuchFileOrDirectory::class.java)
+    }
+
+
+    private fun sftpClient(sftpServer: LocalSftpServer): FilsluseClient {
         return FilsluseClientImpl(
             host = "127.0.0.1",
             port = sftpServer.getPort(),
             username = "test",
             privateKeyPath = TestSftpConfig.clientPrivate
-        /*
-            privateKeyPath = Paths.get(
-                this::class.java.getResource("/test_id_client_rsa")!!.toURI()
-        ),
- */
         )
     }
 }
