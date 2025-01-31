@@ -45,7 +45,6 @@ class LocalSftpServer(
     }
 
     private fun isKeyAuthorized(key: PublicKey, path: Path): Boolean {
-        println("isKeyAuthorized: $key, $path")
         val authorizedKeys = Files.readAllLines(authorizedKeysPath)
         val keyString = key.encoded.joinToString(separator = "") {
             String.format("%02x", it)

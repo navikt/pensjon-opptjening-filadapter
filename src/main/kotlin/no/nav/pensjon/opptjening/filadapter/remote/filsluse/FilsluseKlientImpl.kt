@@ -19,7 +19,6 @@ class FilsluseKlientImpl(
             val sftpChannel = connectAndOpenSftpChannel(jsch)
             val files = sftpChannel.ls(remoteDir)
             return files.map {
-                println("$it ${it.attrs.size} ${it.attrs.mTime} :: ${it.attrs}")
                 RemoteFilInfo(it.filename)
             }
         } catch (t: Throwable) {
@@ -28,7 +27,6 @@ class FilsluseKlientImpl(
     }
 
     private fun connectAndOpenSftpChannel(jsch: JSch): ChannelSftp {
-        println("privateKeyPath: $privateKey")
         val privateKey = privateKey.toByteArray(StandardCharsets.UTF_8)
         jsch.addIdentity(
             "pensjon-opptjening-filadapter",
