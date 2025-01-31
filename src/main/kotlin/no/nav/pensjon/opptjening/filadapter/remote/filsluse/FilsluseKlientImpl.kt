@@ -5,13 +5,13 @@ import com.jcraft.jsch.JSch
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
-class FilsluseClientImpl(
+class FilsluseKlientImpl(
     val host: String,
     val port: Int,
     val username: String,
     val privateKey: String,
     val privateKeyPassword: String,
-) : FilsluseClient {
+) : FilsluseKlient {
 
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
         try {

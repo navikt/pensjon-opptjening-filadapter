@@ -13,8 +13,8 @@ import java.net.InetAddress
 @Configuration
 @Profile("dev-gcp", "prod-gcp")
 class UnleashConfig(
-    @Value("\${UNLEASH_SERVER_API_URL}") private val unleash_url: String,
-    @Value("\${UNLEASH_SERVER_API_TOKEN}") private val unleash_api_key: String
+    @Value("\${UNLEASH_SERVER_API_URL}") private val unleashUrl: String,
+    @Value("\${UNLEASH_SERVER_API_TOKEN}") private val unleashApiKey: String
 ) {
 
     @Bean("unleash")
@@ -23,8 +23,8 @@ class UnleashConfig(
             UnleashConfig.builder()
                 .appName("pensjon-opptjening-filadapter")
                 .instanceId(InetAddress.getLocalHost().hostName)
-                .unleashAPI("$unleash_url/api")
-                .apiKey(unleash_api_key)
+                .unleashAPI("$unleashUrl/api")
+                .apiKey(unleashApiKey)
                 .build(),
             DefaultStrategy()
         )

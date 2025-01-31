@@ -1,13 +1,14 @@
 package no.nav.pensjon.opptjening.filadapter.remote.popp
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 
-class PoppClientImplTest {
+class PoppKlientImplTest {
 
     @Test
     fun x() {
-
+        assertThat(true).isTrue()
     }
 
 }

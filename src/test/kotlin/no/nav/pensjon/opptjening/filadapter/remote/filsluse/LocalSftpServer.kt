@@ -8,7 +8,6 @@ import org.apache.sshd.sftp.server.SftpSubsystemFactory
 import java.nio.file.Files
 import java.nio.file.Path
 import java.security.PublicKey
-import kotlin.io.path.readBytes
 
 class LocalSftpServer(
     val hostKeyPath: Path,

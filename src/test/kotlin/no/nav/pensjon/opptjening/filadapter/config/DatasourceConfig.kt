@@ -3,7 +3,6 @@ package no.nav.pensjon.opptjening.filadapter.config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
 // @Configuration
 class DatasourceConfig {

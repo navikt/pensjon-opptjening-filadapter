@@ -5,14 +5,13 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import no.nav.pensjon.opptjening.filadapter.common.SpringContextTest
 import no.nav.pensjon.opptjening.filadapter.config.TokenProviderConfig
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.mockito.kotlin.mock
 import org.springframework.web.client.RestTemplate
 
-internal class PoppClientTest : SpringContextTest.Standard() {
+internal class PoppKlientTest : SpringContextTest.Standard() {
 
     companion object {
         @JvmField
@@ -22,7 +21,7 @@ internal class PoppClientTest : SpringContextTest.Standard() {
             .build()!!
     }
 
-    private val poppClient: PoppClient = PoppClientImpl(
+    private val poppKlient: PoppKlient = PoppKlientImpl(
         tokenProvider = mock { on { getToken() }.thenReturn(TokenProviderConfig.MOCK_TOKEN) },
         baseUrl = wiremock.baseUrl(),
         restTemplate = RestTemplate(),
@@ -38,7 +37,7 @@ internal class PoppClientTest : SpringContextTest.Standard() {
 
 //        assertThrows<PoppClientException.LagreFilFeilet> {
         assertThrows<Throwable> {
-            poppClient.lagreFil(
+            poppKlient.lagreFil(
                 fil = "hello".byteInputStream(charset = Charsets.US_ASCII)
             )
         }.also {

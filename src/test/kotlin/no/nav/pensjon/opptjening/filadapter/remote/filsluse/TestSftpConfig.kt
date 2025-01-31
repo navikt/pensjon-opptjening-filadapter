@@ -11,7 +11,7 @@ object TestSftpConfig {
     val serverPublic = toPath("/test_id_rsa.pub")
     val authorizedKeys = toPath("/test_authorized_keys")
 
-    val sftpFilePath = Paths.get(this::class.java.getResource("/sftp_files")!!.toURI())
+    val sftpFilePath : Path = Paths.get(this::class.java.getResource("/sftp_files")!!.toURI())
 
     private fun readAsString(classpathPath: String): String {
         return String(this::class.java.getResourceAsStream(classpathPath)!!.readAllBytes(), StandardCharsets.UTF_8)

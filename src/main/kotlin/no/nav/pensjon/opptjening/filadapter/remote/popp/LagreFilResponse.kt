@@ -1,4 +1,4 @@
-package no.nav.popp.web.api.endpoint.fil.model
+package no.nav.pensjon.opptjening.filadapter.remote.popp
 
 import java.util.*
 

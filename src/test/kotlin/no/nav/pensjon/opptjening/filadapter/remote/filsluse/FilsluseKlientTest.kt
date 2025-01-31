@@ -7,11 +7,11 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import kotlin.io.path.readBytes
 
-class FilsluseClientTest {
+class FilsluseKlientTest {
 
     companion object {
 
-        val sshClientPrivateKey = ""
+        const val sshClientPrivateKey = ""
         val sshClientPassword = null
 
         @JvmStatic
@@ -55,12 +55,12 @@ class FilsluseClientTest {
         assertThatThrownBy {
             val file = sftpClient(sftpServer).downloadFile("banan.txt")
         }
-            .isInstanceOf(FilsluseClientImpl.SftpClientException.NoSuchFileOrDirectory::class.java)
+            .isInstanceOf(FilsluseKlientImpl.SftpClientException.NoSuchFileOrDirectory::class.java)
     }
 
 
-    private fun sftpClient(sftpServer: LocalSftpServer): FilsluseClient {
-        return FilsluseClientImpl(
+    private fun sftpClient(sftpServer: LocalSftpServer): FilsluseKlient {
+        return FilsluseKlientImpl(
             host = "127.0.0.1",
             port = sftpServer.getPort(),
             username = "test",

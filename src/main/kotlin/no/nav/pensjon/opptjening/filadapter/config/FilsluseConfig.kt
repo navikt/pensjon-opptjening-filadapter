@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
-import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseClient
-import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseClientImpl
+import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
+import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlientImpl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,14 +12,14 @@ import java.lang.Integer.parseInt
 @Configuration
 class FilsluseConfig {
     @Bean
-    fun filsluseClient(
+    fun filsluseKlient(
         @Value("\${FILSLUSE_HOST}") host: String,
         @Value("\${FILSLUSE_PORT}") port: String,
         @Value("\${FILSLUSE_USERNAME}") username: String,
         @Value("\${SSH_PRIVATE_KEY}") privateKey: String,
         @Value("\${SSH_PRIVATE_KEY_PASSPHRASE}") passphrase: String,
-    ): FilsluseClient {
-        return FilsluseClientImpl(
+    ): FilsluseKlient {
+        return FilsluseKlientImpl(
             host = host,
             port = parseInt(port),
             username = username,

@@ -30,7 +30,7 @@ class FilInfoRepositoryImpl(
                 mapOf("eple" to "banan")
             )
         ).map {
-            println("FRUKT: ${it.get("filnavn")}")
+            println("FRUKT: ${it["filnavn"]}")
         }
         return FilInfo(id, dato = LocalDateTime.now(), status = FilInfo.Status.IKKE_BEHANDLES)
     }

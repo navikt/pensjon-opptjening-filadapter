@@ -3,9 +3,6 @@ package no.nav.pensjon.opptjening.filadapter.remote.popp
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.mapToObject
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.toJson
-import no.nav.popp.web.api.endpoint.fil.model.LagreFilRequest
-import no.nav.popp.web.api.endpoint.fil.model.LagreFilResponse
-import no.nav.popp.web.api.endpoint.fil.model.ValiderFilRequest
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -19,15 +16,15 @@ import java.io.InputStream
 import java.util.*
 
 @Component
-class PoppClientImpl(
+class PoppKlientImpl(
     @Qualifier("poppTokenProvider") private val tokenProvider: TokenProvider,
     @Value("\${POPP_URL}") private val baseUrl: String,
 //    private val metrikker: Metrikker,
     private val restTemplate: RestTemplate,
-) : PoppClient {
+) : PoppKlient {
 
     companion object {
-        private val log = NAVLog(PoppClientImpl::class)
+        private val log = NAVLog(PoppKlientImpl::class)
     }
 
 //    val webClient: WebClient = webClientBuilder.baseUrl("http://localhost:9991/xxxx").build()
