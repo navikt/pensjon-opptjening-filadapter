@@ -52,6 +52,9 @@ spec:
     outbound:
       external:
         - host: pensjon-popp-q2.dev-fss-pub.nais.io
+        - host: filmottak.preprod.local
+          ports:
+            - port: 22
   liveness:
     path: /actuator/health/liveness
     port: 8080
