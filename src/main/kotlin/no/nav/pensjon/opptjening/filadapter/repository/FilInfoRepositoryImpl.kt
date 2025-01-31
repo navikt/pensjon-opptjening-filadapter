@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.repository
 
+import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import java.time.LocalDateTime
@@ -7,6 +8,10 @@ import java.time.LocalDateTime
 class FilInfoRepositoryImpl(
     val jdbcTemplate: NamedParameterJdbcTemplate
 ) : FilInfoRepository {
+
+    companion object {
+        val log = NAVLog(FilInfoRepositoryImpl::class)
+    }
     override fun lagreFilInfo(filinfo: FilInfo) {
         jdbcTemplate.update(
             """
@@ -30,7 +35,7 @@ class FilInfoRepositoryImpl(
                 mapOf("eple" to "banan")
             )
         ).map {
-            println("FRUKT: ${it["filnavn"]}")
+            log.secure.info("hentFilInfo: ${it["filnavn"]}")
         }
         return FilInfo(id, dato = LocalDateTime.now(), status = FilInfo.Status.IKKE_BEHANDLES)
     }

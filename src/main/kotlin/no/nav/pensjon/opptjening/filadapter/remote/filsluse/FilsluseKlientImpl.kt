@@ -2,6 +2,7 @@ package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
+import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
@@ -13,6 +14,10 @@ class FilsluseKlientImpl(
     val privateKeyPassword: String,
 ) : FilsluseKlient {
 
+    companion object {
+        private val log = NAVLog(FilsluseKlientImpl::class)
+    }
+
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
         try {
             val jsch = JSch()
@@ -22,6 +27,8 @@ class FilsluseKlientImpl(
                 RemoteFilInfo(it.filename)
             }
         } catch (t: Throwable) {
+            log.open.error("Fikk feil ved scanning etter filer")
+            log.secure.error("Fikk feil ved scanning etter filer", t)
             throw mapException(t)
         }
     }
@@ -37,7 +44,7 @@ class FilsluseKlientImpl(
         val session = jsch.getSession(username, host, port)
         session.setConfig("StrictHostKeyChecking", "no")
         session.connect()
-        println("SFTP Client: Connected to host")
+        log.open.info("SFTP Client: Connected to host")
         val sftpChannel = session.openChannel("sftp") as ChannelSftp
         sftpChannel.connect()
         return sftpChannel
@@ -49,6 +56,8 @@ class FilsluseKlientImpl(
             val sftpChannel = connectAndOpenSftpChannel(jsch)
             return sftpChannel.get(fileName)
         } catch (t: Throwable) {
+            log.open.error("Fikk feil ved nedlasting av fil: $fileName")
+            log.secure.error("Fikk feil ved nedlasting av fil: $fileName", t)
             throw mapException(t)
         }
     }

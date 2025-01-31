@@ -12,16 +12,13 @@ import javax.sql.DataSource
 class DatabaseStartupValidatorConfig {
     @Bean
     fun databaseStartupValidator(dataSource: DataSource) = DatabaseStartupValidator().apply {
-        println("databaseStartupValidator")
         setDataSource(dataSource)
     }
 
     @Bean
     fun dependsOnPostProcessor(): BeanFactoryPostProcessor? {
-        println("dependsOnPostProcessor")
         return BeanFactoryPostProcessor { bf: ConfigurableListableBeanFactory ->
             val flyway = bf.getBeanNamesForType(Flyway::class.java)
-            println("flyway=${flyway.toList()}")
             flyway.map { beanName: String? -> bf.getBeanDefinition(beanName!!) }
                 .forEach { it.setDependsOn("databaseStartupValidator") }
         }
