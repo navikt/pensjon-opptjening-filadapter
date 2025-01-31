@@ -41,6 +41,7 @@ class FilsluseKlientImpl(
             null,
             privateKeyPassword.toByteArray(StandardCharsets.UTF_8)
         )
+        log.open.info("Connecting to $host:$port")
         val session = jsch.getSession(username, host, port)
         session.setConfig("StrictHostKeyChecking", "no")
         session.connect()
