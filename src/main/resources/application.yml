@@ -19,5 +19,3 @@ no.nav.security.jwt:
 
 spring.datasource:
   url: ${DATABASE_JDBC_URL}
-
-POPP_URL: http://localhost:9991/popp/api

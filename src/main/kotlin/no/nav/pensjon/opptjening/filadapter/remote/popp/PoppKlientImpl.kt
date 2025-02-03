@@ -63,8 +63,9 @@ class PoppKlientImpl(
                 ?.mapToObject(LagreFilResponse::class.java)
                 ?: throw PoppClientException.LagreFilFeilet("Response var null", null)
         } catch (ex: Throwable) {
-            log.open.error("Lagring av fil feilet")
-            log.secure.error("Lagring av fil feilet", ex)
+            log.secure.info("Lagring av fil feilet: $url", ex)
+//            log.open.error("Lagring av fil feilet")
+//            log.secure.error("Lagring av fil feilet", ex)
             throw PoppClientException.LagreFilFeilet("Kunne ikke deserialisere svar", ex)
         }
     }

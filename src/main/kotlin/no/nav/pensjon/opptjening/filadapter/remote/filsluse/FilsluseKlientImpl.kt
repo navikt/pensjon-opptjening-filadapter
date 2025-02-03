@@ -27,8 +27,9 @@ class FilsluseKlientImpl(
                 RemoteFilInfo(it.filename)
             }
         } catch (t: Throwable) {
-            log.open.error("Fikk feil ved scanning etter filer")
-            log.secure.error("Fikk feil ved scanning etter filer", t)
+            log.secure.info("Fikk feil ved scanning etter filer", t)
+//            log.open.error("Fikk feil ved scanning etter filer")
+//            log.secure.error("Fikk feil ved scanning etter filer", t)
             throw mapException(t)
         }
     }
@@ -57,8 +58,9 @@ class FilsluseKlientImpl(
             val sftpChannel = connectAndOpenSftpChannel(jsch)
             return sftpChannel.get(fileName)
         } catch (t: Throwable) {
-            log.open.error("Fikk feil ved nedlasting av fil: $fileName")
-            log.secure.error("Fikk feil ved nedlasting av fil: $fileName", t)
+            log.secure.info("Fikk feil ved nedlasting av fil: $fileName", t)
+//            log.open.error("Fikk feil ved nedlasting av fil: $fileName")
+//            log.secure.error("Fikk feil ved nedlasting av fil: $fileName", t)
             throw mapException(t)
         }
     }
