@@ -61,9 +61,9 @@ jobs:
           path: build/reports/tests/test
 
       # DEPLOYER dev-gcp
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-gcp'
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss
         uses: nais/deploy/actions/deploy@v2
         env:
-          RESOURCE: nais/dev-gcp.yml,nais/unleash-apitoken-dev-gcp.yml
+          RESOURCE: nais/dev-fss.yml,nais/unleash-apitoken-dev-fss.yml
           CLUSTER: dev-fss
           IMAGE: ${{ env.IMAGE_GHCR }}
