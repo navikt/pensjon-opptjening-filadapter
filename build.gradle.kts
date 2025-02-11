@@ -6,8 +6,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val navTokenSupportVersion = "5.0.16"
 val logbackEncoderVersion = "8.0"
 val postgresqlVersion = "42.7.5"
-// val flywayCoreVersion = "11.1.1"
-val flywayCoreVersion = "11.2.0"
 val testcontainersVersion = "1.20.4"
 val jacksonVersion = "2.18.2"
 val azureAdClient = "0.0.7"
@@ -77,12 +75,6 @@ dependencies {
     implementation("org.apache.sshd:sshd-core:$apacheSshdVersion")
     implementation("org.apache.sshd:sshd-sftp:$apacheSshdVersion")
 
-    // DB
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.postgresql:postgresql:$postgresqlVersion")
-    implementation("org.flywaydb:flyway-core:$flywayCoreVersion")
-    implementation("org.flywaydb:flyway-database-postgresql:$flywayCoreVersion")
-
     // These are transitive dependencies, but overriding them on top level due to vulnerabilities
     // (and in some cases, the wrong version being picked)
     implementation("org.xerial.snappy:snappy-java:$snappyJavaVersion")
@@ -94,7 +86,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
-    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.awaitility:awaitility:$awaitilityVersion")

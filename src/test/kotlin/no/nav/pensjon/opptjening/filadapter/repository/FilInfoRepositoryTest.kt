@@ -1,13 +1,15 @@
 package no.nav.pensjon.opptjening.filadapter.repository
 
-import no.nav.pensjon.opptjening.filadapter.common.SpringContextTest
+import no.nav.pensjon.opptjening.filadapter.Application
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
 
+@SpringBootTest(classes = [Application::class])
 class FilInfoRepositoryTest(
     @Autowired val repository: FilInfoRepository
-) : SpringContextTest.Standard() {
+) {
 
     @Test
     fun testRepo() {

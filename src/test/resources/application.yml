@@ -3,14 +3,3 @@ UNLEASH_SERVER_API_URL: http://localhost:9991/api
 UNLEASH_SERVER_API_TOKEN: "bogus"
 
 SSH_PRIVATE_KEY: ""
-spring.datasource:
-  driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-  url: jdbc:tc:postgresql:17:///test
-  username: test
-  password: test
-spring.flyway:
-  enabled: true
-  baseline-on-migrate: true
-  validate-on-migrate: true
-logging.level:
-  org.flywaydb: DEBUG

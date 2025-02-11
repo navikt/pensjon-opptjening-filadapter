@@ -8,7 +8,7 @@ import net.javacrumbs.jsonunit.core.Option
 import net.logstash.logback.encoder.LogstashEncoder
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
-import org.testcontainers.shaded.org.apache.commons.io.output.ByteArrayOutputStream
+import java.io.ByteArrayOutputStream
 
 
 /**

@@ -3,7 +3,6 @@ package no.nav.pensjon.opptjening.filadapter.remote.popp
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
-import no.nav.pensjon.opptjening.filadapter.common.SpringContextTest
 import no.nav.pensjon.opptjening.filadapter.config.TokenProviderConfig
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -11,9 +10,13 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import org.mockito.kotlin.mock
 import org.springframework.web.client.RestTemplate
 
-internal class PoppKlientTest : SpringContextTest.Standard() {
+internal class PoppKlientTest {
 
     companion object {
+
+        const val WIREMOCK_PORT = 9991
+        const val POPP_URL="http://localhost:9991/popp/api"
+
         @JvmField
         @RegisterExtension
         val wiremock = WireMockExtension.newInstance()
