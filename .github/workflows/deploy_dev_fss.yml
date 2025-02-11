@@ -65,5 +65,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           RESOURCE: nais/dev-gcp.yml,nais/unleash-apitoken-dev-gcp.yml
-          CLUSTER: dev-gcp
+          CLUSTER: dev-fss
           IMAGE: ${{ env.IMAGE_GHCR }}
