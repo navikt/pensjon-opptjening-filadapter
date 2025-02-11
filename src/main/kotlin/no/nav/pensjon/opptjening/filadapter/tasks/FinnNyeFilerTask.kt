@@ -13,7 +13,7 @@ class FinnNyeFilerTask(
         val log = NAVLog(FinnNyeFilerTask::class)
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 */15 * * * *")
     fun finnNyeFiler() {
         val filer = filsluseKlient.scanForFiles("/")
         log.open.info("Scannet og fant ${filer.size} filer")
