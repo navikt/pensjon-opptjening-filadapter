@@ -14,6 +14,7 @@ class FinnNyeFilerTask(
     @Scheduled(cron = "0 */15 * * * *")
     fun finnNyeFiler() {
         try {
+            log.open.info("Scanner etter nye filer")
             val filer = filsluseKlient.scanForFiles("/")
             log.open.info("Scannet og fant ${filer.size} filer")
             log.open.info("Scannet og fant ${filer.size} filer")
