@@ -1,79 +1,93 @@
 package no.nav.pensjon.opptjening.filadapter.remote.popp
 
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.*
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.mapToObject
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.toJson
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
-import org.springframework.stereotype.Component
-import org.springframework.web.client.RestTemplate
-import pensjon.opptjening.azure.ad.client.TokenProvider
-import java.io.InputStream
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 
-@Component
 class PoppKlientImpl(
-    @Qualifier("poppTokenProvider") private val tokenProvider: TokenProvider,
-    @Value("\${POPP_URL}") private val baseUrl: String,
-//    private val metrikker: Metrikker,
-    private val restTemplate: RestTemplate,
+    private val baseUrl: String,
+    private val nextToken: () -> String,
 ) : PoppKlient {
 
     companion object {
         private val log = NAVLog(PoppKlientImpl::class)
     }
 
-//    val webClient: WebClient = webClientBuilder.baseUrl("http://localhost:9991/xxxx").build()
-
-    override fun lagreFil(fil: InputStream): UUID {
-        log.open.info("Lagrer fil")
-        val innhold = fil.readAllBytes()
-        val lagreRequest = LagreFilRequest(
-            fileName = "TODO",
-            tegnsett = LagreFilRequest.Tegnsett.US_ASCII,
-            antallBytes = innhold.size.toLong(),
-            data = innhold
+    override fun opprettFil(oppprettFilRequest: OpprettFilRequest): OpprettFilResponse {
+        return callPopp(
+            url = "$baseUrl/fil/opprett",
+            body = oppprettFilRequest,
+            responseType = OpprettFilResponse::class.java,
         )
-        val response = lagreFil(lagreRequest)
-        return response.filId!!
     }
 
-    fun lagreFil(request: LagreFilRequest): LagreFilResponse {
-        val url = "$baseUrl/fil/opprett"
-        val response = restTemplate.exchange(
-            url,
-            HttpMethod.POST,
-            HttpEntity(
-                request.toJson(),
-                HttpHeaders().apply {
-                    accept = listOf(MediaType.APPLICATION_JSON)
-                    contentType = MediaType.APPLICATION_JSON
-                    setBearerAuth(tokenProvider.getToken())
-                }
-            ),
-            String::class.java
+    override fun lagreFilSegment(lagreFilSegmentRequest: LagreFilSegmentRequest): LagreFilSegmentResponse {
+        return callPopp(
+            url = "$baseUrl/fil/leggtil",
+            body = lagreFilSegmentRequest,
+            responseType = LagreFilSegmentResponse::class.java,
         )
-
-        try {
-            return response.body
-                ?.mapToObject(LagreFilResponse::class.java)
-                ?: throw PoppClientException.LagreFilFeilet("Response var null", null)
-        } catch (ex: Throwable) {
-            log.secure.info("Lagring av fil feilet: $url", ex)
-//            log.open.error("Lagring av fil feilet")
-//            log.secure.error("Lagring av fil feilet", ex)
-            throw PoppClientException.LagreFilFeilet("Kunne ikke deserialisere svar", ex)
-        }
     }
 
     override fun validerFil(id: UUID): Boolean {
-        val validerFilRequest = ValiderFilRequest(
-            id = id
+        val response = callPopp(
+            url = "$baseUrl/fil/valider",
+            body = ValiderFilRequest(id),
+            responseType = ValiderFilResponse::class.java,
         )
-        return false
+        return response.status == ValiderFilResponse.Status.OK
+    }
+
+
+    private fun buildRequest(url: String, body: Any): Request {
+        return Request.Builder()
+            .post(body.toJson().toRequestBody("application/json".toMediaTypeOrNull()!!))
+            .url(url)
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", "Bearer ${nextToken()}")
+            .build()
+    }
+
+
+    private fun <T : Any> callPopp(
+        url: String,
+        body: Any,
+        responseType: Class<T>
+    ): T {
+        val client = OkHttpClient.Builder()
+            .build()
+        val request = buildRequest(
+            url = url,
+            body = body,
+        )
+        return client.newCall(request).execute().use { response ->
+            val body = response.body?.string()
+            if (body.isNullOrEmpty()) {
+                throw PoppClientException.ResponseWithNoBody(response.code)
+            }
+            val callResponse =
+                try {
+                    body.mapToObject(responseType)
+                } catch (t: Throwable) {
+                    log.open.error("Kunne ikke lese svar fra popp")
+                    log.secure.error("Kunne ikke lese svar fra popp", t)
+                    log.secure.error("response ${response.code} ${response.message}")
+                    log.secure.error("body: $body")
+                    throw PoppClientException.FailedToParseResponse("Kunne ikke lese svar fra popp", t)
+                }
+            if (response.code != 200) {
+                throw PoppClientException.KallFeilet(
+                    message = "response status code ${response.code}",
+                    response = callResponse
+                )
+            }
+            callResponse
+        }
     }
 }

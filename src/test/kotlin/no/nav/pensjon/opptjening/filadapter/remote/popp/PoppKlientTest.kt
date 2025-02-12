@@ -3,48 +3,115 @@ package no.nav.pensjon.opptjening.filadapter.remote.popp
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
-import no.nav.pensjon.opptjening.filadapter.config.TokenProviderConfig
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.LagreFilSegmentRequest
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilRequest
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilResponse
+import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.toJson
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.RegisterExtension
-import org.mockito.kotlin.mock
-import org.springframework.web.client.RestTemplate
+import java.util.*
+
 
 internal class PoppKlientTest {
 
     companion object {
-
-        const val WIREMOCK_PORT = 9991
-        const val POPP_URL="http://localhost:9991/popp/api"
+        val WIREMOCK_PORT = 15001
 
         @JvmField
         @RegisterExtension
         val wiremock = WireMockExtension.newInstance()
             .options(WireMockConfiguration.wireMockConfig().port(WIREMOCK_PORT))
             .build()!!
+
+        fun WireMockExtension.`opprettFilMock`(response: OpprettFilResponse): StubMapping {
+            synchronized(this) {
+                return this.stubFor(
+                    post(urlPathEqualTo("/fil/opprett"))
+                        .willReturn(
+                            aResponse()
+                                .withHeader("Content-Type", "application/json")
+                                .withStatus(202)
+                                .withTransformerParameter("historiske", "banan")
+                                .withBody(response.toJson())
+                        )
+                )
+            }
+        }
     }
 
     private val poppKlient: PoppKlient = PoppKlientImpl(
-        tokenProvider = mock { on { getToken() }.thenReturn(TokenProviderConfig.MOCK_TOKEN) },
         baseUrl = wiremock.baseUrl(),
-        restTemplate = RestTemplate(),
-    )
-
+    ) { "token" }
 
     @Test
-    fun `kaster exception med informasjon dersom kall svarer med server error`() {
+    fun `opprettFil kaster exception med informasjon dersom kall svarer med server error`() {
         wiremock.givenThat(
             post(urlPathEqualTo("/fil/opprett"))
                 .willReturn(serverError())
         )
-
-//        assertThrows<PoppClientException.LagreFilFeilet> {
-        assertThrows<Throwable> {
-            poppKlient.lagreFil(
-                fil = "hello".byteInputStream(charset = Charsets.US_ASCII)
+        assertThatThrownBy {
+            poppKlient.opprettFil(
+                OpprettFilRequest(
+                    fileName = "foo.txt",
+                    antallBytes = 93,
+                )
             )
-        }.also {
-            // assertThat(it).isEqualTo("banana")
         }
+            .isInstanceOf(PoppClientException.ResponseWithNoBody::class.java)
+    }
+
+    @Test
+    fun `lagreSegment kaster exception med informasjon dersom kall svarer med server error`() {
+        wiremock.givenThat(
+            post(urlPathEqualTo("/fil/leggtil"))
+                .willReturn(serverError())
+        )
+        assertThatThrownBy {
+            poppKlient.lagreFilSegment(
+                LagreFilSegmentRequest(
+                    filId = UUID.randomUUID(),
+                    segmentNo = 0,
+                    data = "hello".toByteArray(charset = Charsets.US_ASCII)
+                )
+            )
+        }
+            .isInstanceOf(PoppClientException.ResponseWithNoBody::class.java)
+    }
+
+    @Test
+    fun `valider kaster exception med informasjon dersom kall svarer med server error`() {
+        wiremock.givenThat(
+            post(urlPathEqualTo("/fil/valider"))
+                .willReturn(serverError())
+        )
+        assertThatThrownBy {
+            poppKlient.validerFil(UUID.randomUUID())
+        }
+            .isInstanceOf(PoppClientException.ResponseWithNoBody::class.java)
+    }
+
+    @Test
+    fun `opprettFil som lykkes returnerer responsobjektet`() {
+        val okResponse = OpprettFilResponse(
+            filId = UUID.randomUUID(),
+            informasjonsTekst = "Fil opprettet",
+            status = OpprettFilResponse.Status.LAGRET_OK,
+        )
+        wiremock.opprettFilMock(okResponse)
+        wiremock.givenThat(
+            post(urlPathEqualTo("/fil/opprett"))
+                .willReturn(serverError())
+        )
+        assertThatThrownBy {
+            poppKlient.opprettFil(
+                OpprettFilRequest(
+                    fileName = "foo.txt",
+                    antallBytes = 93,
+                )
+            )
+        }
+            .isInstanceOf(PoppClientException.ResponseWithNoBody::class.java)
     }
 }

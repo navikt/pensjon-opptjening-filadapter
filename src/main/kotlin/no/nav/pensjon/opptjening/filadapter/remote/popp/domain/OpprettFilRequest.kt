@@ -1,15 +1,13 @@
-package no.nav.pensjon.opptjening.filadapter.remote.popp
+package no.nav.pensjon.opptjening.filadapter.remote.popp.domain
 
 import java.util.*
 
-data class LagreFilRequest(
+data class OpprettFilRequest(
     val fileName: String,
-    val tegnsett: Tegnsett,
     val antallBytes: Long,
-    val data: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
-        return if (other is LagreFilRequest) {
+        return if (other is OpprettFilRequest) {
             fileName == other.fileName
         } else {
             false
@@ -18,10 +16,5 @@ data class LagreFilRequest(
 
     override fun hashCode(): Int {
         return Objects.hash(fileName)
-    }
-
-    enum class Tegnsett {
-        EBCDIC,
-        US_ASCII,
     }
 }

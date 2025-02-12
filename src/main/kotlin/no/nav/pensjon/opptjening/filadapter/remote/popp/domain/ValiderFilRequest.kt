@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.filadapter.remote.popp
+package no.nav.pensjon.opptjening.filadapter.remote.popp.domain
 
 import java.util.*
 

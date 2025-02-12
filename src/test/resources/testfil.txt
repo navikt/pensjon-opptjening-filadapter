@@ -1,0 +1,5 @@
+dette er en fil med masse ulikt innhold, inkludert norske bokstaver
+
+æøåÆØÅ
+
+og her er slutten på filen

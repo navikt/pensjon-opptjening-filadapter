@@ -81,6 +81,8 @@ dependencies {
     implementation("org.yaml:snakeyaml:$snakeYamlVersion")
 
     implementation("com.github.mwiede:jsch:$jschVersion")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
 
     // Test - setup
     testImplementation("org.springframework.boot:spring-boot-starter-test")
