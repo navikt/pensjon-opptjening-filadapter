@@ -24,7 +24,6 @@ class ScheduledTasksConfig(
         filInfoRepository: FilInfoRepository
     ): FinnNyeFilerTask {
         return FinnNyeFilerTask(
-            filInfoRepository = filInfoRepository,
             filsluseKlient = filsluseKlient
         )
     }
