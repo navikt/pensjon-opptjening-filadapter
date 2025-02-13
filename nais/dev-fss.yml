@@ -27,7 +27,7 @@ spec:
     - name: FILSLUSE_PORT
       value: "22"
     - name: FILSLUSE_USERNAME
-      value: srvpopp-sftp
+      value: srvPopp
   envFrom:
     - secret: unleash-api-token
     - secret: filadapter-sshkey
