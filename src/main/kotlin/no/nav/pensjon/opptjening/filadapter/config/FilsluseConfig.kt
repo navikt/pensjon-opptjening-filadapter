@@ -17,6 +17,7 @@ class FilsluseConfig {
         @Value("\${FILSLUSE_PORT}") port: String,
         @Value("\${FILSLUSE_USERNAME}") username: String,
         @Value("\${SSH_PRIVATE_KEY}") privateKey: String,
+        @Value("\${SSH_PUBLIC_KEY}") publicKey: String,
         @Value("\${SSH_PRIVATE_KEY_PASSPHRASE}") passphrase: String,
     ): FilsluseKlient {
         return FilsluseKlientImpl(
@@ -24,6 +25,7 @@ class FilsluseConfig {
             port = parseInt(port),
             username = username,
             privateKey = privateKey,
+            publicKey = publicKey,
             privateKeyPassword = passphrase
         )
     }

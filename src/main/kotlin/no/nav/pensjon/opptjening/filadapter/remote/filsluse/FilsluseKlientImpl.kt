@@ -11,6 +11,7 @@ class FilsluseKlientImpl(
     val port: Int,
     val username: String,
     val privateKey: String,
+    val publicKey: String,
     val privateKeyPassword: String,
 ) : FilsluseKlient {
 
@@ -35,14 +36,20 @@ class FilsluseKlientImpl(
     }
 
     private fun connectAndOpenSftpChannel(jsch: JSch): ChannelSftp {
+        val privateKeySub = privateKey.substring(30,55)
         val privateKey = privateKey.toByteArray(StandardCharsets.UTF_8)
+        val publicKey = publicKey.toByteArray(StandardCharsets.UTF_8)
         jsch.addIdentity(
             "pensjon-opptjening-filadapter",
             privateKey,
-            null,
+            publicKey,
             privateKeyPassword.toByteArray(StandardCharsets.UTF_8)
         )
         log.open.info("Connecting to $host:$port")
+        log.secure.info("Connecting to $username@$host:$port")
+        if (privateKeySub.length < 30) {
+            log.secure.info("Start of private key ${privateKeySub}")
+        }
         val session = jsch.getSession(username, host, port)
         session.setConfig("StrictHostKeyChecking", "no")
         session.connect()

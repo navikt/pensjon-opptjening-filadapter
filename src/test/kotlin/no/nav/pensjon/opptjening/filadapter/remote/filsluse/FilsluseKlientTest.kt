@@ -65,6 +65,7 @@ class FilsluseKlientTest {
             port = sftpServer.getPort(),
             username = "test",
             privateKey = TestSftpConfig.clientPrivate,
+            publicKey = TestSftpConfig.clientPublic,
             privateKeyPassword = "password",
         )
     }
