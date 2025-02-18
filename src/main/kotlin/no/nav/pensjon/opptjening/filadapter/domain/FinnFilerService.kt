@@ -12,7 +12,7 @@ class FinnFilerService(
     }
 
     fun hentFiler() {
-        val filer = filsluseKlient.scanForFiles("/")
+        val filer = filsluseKlient.scanForFiles("/inbound")
         filer.forEach {
             registrerFilsluseFil(it)
         }

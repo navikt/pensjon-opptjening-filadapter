@@ -12,7 +12,7 @@ spec:
       allowAllUsers: false
       claims:
         groups:
-          - id: "7ef907b4-ec9f-47dd-ab41-4e54ba32ceb1" #AAD pensjonopptjening testgruppe
+          - id: "abd710c7-b01d-48e6-98b9-83ff615edf26" #AAD nais-team-pensjonopptjening
   webproxy: true
   secureLogs:
     enabled: true
@@ -20,7 +20,7 @@ spec:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-fss
     - name: POPP_URL
-      value: https://pensjon-popp-q2.dev-fss-pub.nais.io/popp/api
+      value: https://pensjon-popp.prod-fss-pub.nais.io/popp/api
     - name: POPP_API_ID
       value: dev-fss.pensjonopptjening.pensjon-popp-q2
     - name: FILSLUSE_HOST
@@ -38,8 +38,8 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: pensjon-popp-q2.dev-fss-pub.nais.io
-        - host: filmottak.preprod.local
+        - host: pensjon-popp.prod-fss-pub.nais.io
+        - host: filmottak.TODO-PROD.finnesikke.preprod.nav.no
           ports:
             - port: 22
     inbound:
@@ -47,12 +47,7 @@ spec:
         - application: azure-token-generator
           namespace: aura
           cluster: dev-gcp
-        - application: pensjon-opptjening-admin-web
-          namespace: pensjonopptjening
-          cluster: dev-gcp
-          permissions:
-            roles:
-              - fil.lagre
+
   liveness:
     path: /actuator/health/liveness
     port: 8080

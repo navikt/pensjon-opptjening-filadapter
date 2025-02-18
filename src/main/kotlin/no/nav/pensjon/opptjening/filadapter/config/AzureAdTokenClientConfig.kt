@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
-@Profile("dev-gcp", "prod-gcp")
+@Profile("dev-fss", "prod-fss")
 class AzureAdTokenClientConfig(
     @Value("\${AZURE_APP_CLIENT_ID}") val azureAppClientId: String,
     @Value("\${AZURE_APP_CLIENT_SECRET}") val azureAppClientSecret: String,

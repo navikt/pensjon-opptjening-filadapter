@@ -1,4 +1,4 @@
-name: Bygg og deploy pensjon-opptjening-filadapter til dev-gcp
+name: Bygg og deploy pensjon-opptjening-filadapter til dev-fss
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
           name: failed-test-results
           path: build/reports/tests/test
 
-      # DEPLOYER dev-gcp
+      # DEPLOYER dev-fss
       - name: 'Deploy pensjon-opptjening-filadapter to dev-fss'
         uses: nais/deploy/actions/deploy@v2
         env:

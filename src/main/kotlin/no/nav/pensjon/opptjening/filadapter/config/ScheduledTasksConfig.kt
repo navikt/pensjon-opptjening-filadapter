@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor
 
 @Configuration
 @EnableScheduling
-@Profile("dev-gcp", "prod-gcp")
+@Profile("dev-fss", "prod-fss")
 class ScheduledTasksConfig(
     private val unleash: Unleash,
     private val filInfoRepository: FilInfoRepository,

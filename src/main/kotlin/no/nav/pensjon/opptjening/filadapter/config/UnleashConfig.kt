@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile
 import java.net.InetAddress
 
 @Configuration
-@Profile("dev-gcp", "prod-gcp")
+@Profile("dev-fss", "prod-fss")
 class UnleashConfig(
     @Value("\${UNLEASH_SERVER_API_URL}") private val unleashUrl: String,
     @Value("\${UNLEASH_SERVER_API_TOKEN}") private val unleashApiKey: String

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import java.lang.Integer.parseInt
 
-@Profile("dev-gcp", "prod-gcp")
+@Profile("dev-fss", "prod-fss")
 @Configuration
 class FilsluseConfig {
     @Bean
