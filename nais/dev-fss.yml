@@ -34,7 +34,12 @@ spec:
     - secret: filadapter-sshkey
   image: {{ image }}
   ingresses:
-    - https://pensjon-opptjening-filadapter.intern.dev.nav.no
+    - "https://pensjon-opptjening-filadapter.intern.dev.nav.no"
+    - "https://pensjon-opptjening-filadapter.dev.adeo.no"
+    - "https://pensjon-opptjening-filadapter.intern.dev.adeo.no"
+    - "https://pensjon-opptjening-filadapter.nais.preprod.local"
+    - "https://pensjon-opptjening-filadapter.dev-fss-pub.nais.io"
+
   accessPolicy:
     outbound:
       external:
