@@ -3,14 +3,13 @@ package no.nav.pensjon.opptjening.filadapter.web
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.security.token.support.core.api.Protected
-import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Protected
-@Profile("dev-fss", "prod-fss")
+// @Profile("dev-fss", "prod-fss")
 class AdminWebApi(
     val filsluseKlient: FilsluseKlient,
 ) {
@@ -18,7 +17,11 @@ class AdminWebApi(
         private val log = NAVLog(AdminWebApi::class)
     }
 
-    @GetMapping("/listFiler")
+    init {
+        println("initializing AdminWebApi")
+    }
+
+    @GetMapping("/list")
     fun listFiler(): ResponseEntity<String> {
         log.open.info("List filer")
         return filsluseKlient.scanForFiles("/inbound")

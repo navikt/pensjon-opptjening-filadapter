@@ -3,3 +3,19 @@ UNLEASH_SERVER_API_URL: http://localhost:9991/api
 UNLEASH_SERVER_API_TOKEN: "bogus"
 
 SSH_PRIVATE_KEY: ""
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+no.nav.security.jwt:
+  issuer:
+    azure:
+      discoveryurl: http://localhost:${mock-oauth2-server.port}/azure/.well-known/openid-configuration
+      accepted_audience: someaudience

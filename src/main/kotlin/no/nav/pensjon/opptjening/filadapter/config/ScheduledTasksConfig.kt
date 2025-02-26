@@ -2,7 +2,6 @@ package no.nav.pensjon.opptjening.filadapter.config
 
 import io.getunleash.Unleash
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
-import no.nav.pensjon.opptjening.filadapter.repository.FilInfoRepository
 import no.nav.pensjon.opptjening.filadapter.tasks.FinnNyeFilerTask
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,12 +15,10 @@ import java.util.concurrent.ThreadPoolExecutor
 @Profile("dev-fss", "prod-fss")
 class ScheduledTasksConfig(
     private val unleash: Unleash,
-    private val filInfoRepository: FilInfoRepository,
 ) {
     @Bean
     fun statusCheckTask(
         filsluseKlient: FilsluseKlient,
-        filInfoRepository: FilInfoRepository
     ): FinnNyeFilerTask {
         return FinnNyeFilerTask(
             filsluseKlient = filsluseKlient
