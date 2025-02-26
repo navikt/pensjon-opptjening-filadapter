@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Protected
-// @Profile("dev-fss", "prod-fss")
 class AdminWebApi(
     val filsluseKlient: FilsluseKlient,
 ) {

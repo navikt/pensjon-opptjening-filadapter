@@ -5,11 +5,11 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 object TestSftpConfig {
-    val clientPrivate = readAsString("/test_id_client_rsa")
-    val clientPublic = readAsString("/test_id_client_rsa.pub")
-    val serverPrivate = toPath("/test_id_rsa")
-    val serverPublic = toPath("/test_id_rsa.pub")
-    val authorizedKeys = toPath("/test_authorized_keys")
+    val clientPrivate = readAsString("/ssh_keys/test_id_client_rsa")
+    val clientPublic = readAsString("/ssh_keys/test_id_client_rsa.pub")
+    val serverPrivate = toPath("/ssh_keys/test_id_rsa")
+    val serverPublic = toPath("/ssh_keys/test_id_rsa.pub")
+    val authorizedKeys = toPath("/ssh_keys/test_authorized_keys")
 
     val sftpFilePath : Path = Paths.get(this::class.java.getResource("/sftp_files")!!.toURI())
 

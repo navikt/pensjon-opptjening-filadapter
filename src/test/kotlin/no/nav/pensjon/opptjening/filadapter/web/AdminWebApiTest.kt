@@ -5,12 +5,10 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 
@@ -30,17 +28,6 @@ class AdminWebApiTest {
     @LocalServerPort
     private var port: Int = 0
 
-    /*
-    @BeforeEach
-    fun setup() {
-        mockOAuth2Server.start()
-    }
-
-    @AfterEach
-    fun teardown() {
-        mockOAuth2Server.shutdown()
-    }
-    */
     fun token(): String {
         return mockOAuth2Server.issueToken(
             issuerId = "azure",
@@ -81,4 +68,3 @@ class AdminWebApiTest {
         println(response.body?.string())
     }
 }
-

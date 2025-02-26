@@ -44,15 +44,6 @@ class LocalSftpServer(
         sshServer.stop()
     }
 
-    private fun isKeyAuthorized(key: PublicKey, path: Path): Boolean {
-        val authorizedKeys = Files.readAllLines(authorizedKeysPath)
-        val keyString = key.encoded.joinToString(separator = "") {
-            String.format("%02x", it)
-        }
-        val publicKey = TestSftpConfig.clientPublic.toByteArray(Charsets.UTF_8)
-        return true
-    }
-
     fun getPort(): Int = sshServer.port
 
     companion object {
