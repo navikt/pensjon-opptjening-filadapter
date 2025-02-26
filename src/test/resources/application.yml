@@ -1,6 +1,4 @@
 POPP_URL: http://localhost:9991/api
-UNLEASH_SERVER_API_URL: http://localhost:9991/api
-UNLEASH_SERVER_API_TOKEN: "bogus"
 
 SSH_PRIVATE_KEY: ""
 

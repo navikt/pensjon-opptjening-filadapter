@@ -30,7 +30,6 @@ spec:
     - name: FILSLUSE_USERNAME
       value: srvPopp
   envFrom:
-    - secret: unleash-api-token
     - secret: filadapter-sshkey
   image: {{ image }}
   ingresses:

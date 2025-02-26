@@ -14,7 +14,6 @@ val awaitilityVersion = "4.2.2"
 val wiremockVersion = "3.12.0"
 val micrometerRegistryPrometheusVersion = "1.14.3"
 val mockitoKotlinVersion = "5.4.0"
-val unleashVersion = "9.2.6"
 val jsonUnitVersion = "4.1.0"
 val guavaVersion = "33.4.0-jre"
 val jschVersion = "0.2.23"
@@ -66,7 +65,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClient")
-    implementation("io.getunleash:unleash-client-java:$unleashVersion")
     implementation("com.google.guava:guava:$guavaVersion")
 
     implementation("org.apache.httpcomponents.client5:httpclient5:$httpClient5Version")
