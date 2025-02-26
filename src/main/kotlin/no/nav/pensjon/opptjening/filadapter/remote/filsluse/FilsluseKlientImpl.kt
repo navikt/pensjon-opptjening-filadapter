@@ -36,7 +36,6 @@ class FilsluseKlientImpl(
     }
 
     private fun connectAndOpenSftpChannel(jsch: JSch): ChannelSftp {
-        val privateKeySub = privateKey.substring(30,55)
         val privateKey = privateKey.toByteArray(StandardCharsets.UTF_8)
         val publicKey = publicKey.toByteArray(StandardCharsets.UTF_8)
         jsch.addIdentity(
@@ -47,9 +46,6 @@ class FilsluseKlientImpl(
         )
         log.open.info("Connecting to $host:$port")
         log.secure.info("Connecting to $username@$host:$port")
-        if (privateKeySub.length < 30) {
-            log.secure.info("Start of private key ${privateKeySub}")
-        }
         val session = jsch.getSession(username, host, port)
         session.setConfig("StrictHostKeyChecking", "no")
         session.connect()
@@ -66,8 +62,6 @@ class FilsluseKlientImpl(
             return sftpChannel.get(fileName)
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved nedlasting av fil: $fileName", t)
-//            log.open.error("Fikk feil ved nedlasting av fil: $fileName")
-//            log.secure.error("Fikk feil ved nedlasting av fil: $fileName", t)
             throw mapException(t)
         }
     }

@@ -12,8 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor
 @Configuration
 @EnableScheduling
 @Profile("dev-fss", "prod-fss")
-class ScheduledTasksConfig(
-) {
+class ScheduledTasksConfig {
     @Bean
     fun statusCheckTask(
         filsluseKlient: FilsluseKlient,

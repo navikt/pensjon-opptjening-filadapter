@@ -25,7 +25,7 @@ class AdminWebApi(
         log.open.info("List filer")
         return filsluseKlient.scanForFiles("/inbound")
             .map {
-                "${it.name}"
+                it.name
             }
             .joinToString("\n")
             .let { ResponseEntity.ok(it) }

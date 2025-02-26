@@ -7,7 +7,6 @@ import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider
 import org.apache.sshd.sftp.server.SftpSubsystemFactory
 import java.nio.file.Files
 import java.nio.file.Path
-import java.security.PublicKey
 
 class LocalSftpServer(
     val hostKeyPath: Path,

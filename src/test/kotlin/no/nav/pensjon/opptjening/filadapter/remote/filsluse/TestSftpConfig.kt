@@ -13,8 +13,6 @@ object TestSftpConfig {
 
     val sftpFilePath : Path = Paths.get(this::class.java.getResource("/sftp_files")!!.toURI())
 
-    val pw = "GaeGhaH4qwou6Wie1huiGh7ei"
-
     private fun readAsString(classpathPath: String): String {
         return String(this::class.java.getResourceAsStream(classpathPath)!!.readAllBytes(), StandardCharsets.UTF_8)
     }

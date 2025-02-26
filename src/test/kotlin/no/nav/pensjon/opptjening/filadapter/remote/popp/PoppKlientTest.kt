@@ -99,7 +99,7 @@ internal class PoppKlientTest {
             informasjonsTekst = "Fil opprettet",
             status = OpprettFilResponse.Status.LAGRET_OK,
         )
-        wiremock.opprettFilMock(okResponse)
+        wiremock.`opprettFilMock`(okResponse)
         wiremock.givenThat(
             post(urlPathEqualTo("/fil/opprett"))
                 .willReturn(serverError())

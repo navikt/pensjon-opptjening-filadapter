@@ -14,7 +14,7 @@ class ProsesserFilServiceTest {
         val fil = this.javaClass.getResource("/testfil.txt")!!.toURI().let { Path.of(it) }
         val id = service.prosesser(fil)
         assertThat(id).isNotNull
-        val innhold = poppKlient.hentInnhold(id!!)
+        val innhold = poppKlient.hentInnhold(id)
         assertThat(Files.readAllBytes(fil)).isEqualTo(innhold)
     }
 

@@ -11,9 +11,6 @@ class FilsluseKlientTest {
 
     companion object {
 
-        const val sshClientPrivateKey = ""
-        val sshClientPassword = null
-
         @JvmStatic
         val sftpServer = LocalSftpServer.default()
 
