@@ -9,12 +9,20 @@ class MockFilsluseKlient : FilsluseKlient {
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
         return listOf(
             RemoteFilInfo(
-                name = "filnavn.txt"
+                name = "filnavn.txt",
+                10,
             )
         )
     }
 
-    override fun downloadFile(fileName: String): InputStream {
+    override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo? {
+        return RemoteFilInfo(
+            name = "filnavn.txt",
+            10,
+        )
+    }
+
+    override fun downloadFile(remoteDir: String, fileName: String): InputStream {
         return ByteArrayInputStream(ByteArray(0))
     }
 }

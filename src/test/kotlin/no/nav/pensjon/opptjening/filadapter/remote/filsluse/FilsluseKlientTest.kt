@@ -5,6 +5,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.io.path.readBytes
 
 class FilsluseKlientTest {
@@ -34,14 +36,25 @@ class FilsluseKlientTest {
         println("port: ${sftpServer.getPort()}")
         val remoteFiles = sftpClient(sftpServer).scanForFiles("/")
         println("remoteFiles: $remoteFiles")
-        assertThat(remoteFiles).contains(RemoteFilInfo("testfile.txt"))
+        assertThat(remoteFiles.map { it.name }).contains("testfile.txt")
     }
+
+    @Test
+    fun `kan liste en enkeltfil som finnes`() {
+        println("port: ${sftpServer.getPort()}")
+        val remoteFil = sftpClient(sftpServer).scanForFil("/", "testfile.txt")
+        println("remoteFiles: $remoteFil")
+        val testFile = this.javaClass.getResource("/sftp_files/testfile.txt").toURI().let { Path.of(it) }
+        assertThat(remoteFil?.name).isEqualTo("testfile.txt")
+        assertThat(remoteFil?.size).isEqualTo(Files.size(testFile))
+    }
+
 
     @Test
     fun `kan laste ned en fil som finnes`() {
         val forventetInnhold = TestSftpConfig.sftpFilePath.resolve("testfile.txt").readBytes()
         println("port: ${sftpServer.getPort()}")
-        val file = sftpClient(sftpServer).downloadFile("testfile.txt")
+        val file = sftpClient(sftpServer).downloadFile(".", "testfile.txt")
         assertThat(file).isNotNull()
         val nedlastetFil = file.readBytes()
         assertThat(nedlastetFil).isEqualTo(forventetInnhold)
@@ -50,7 +63,7 @@ class FilsluseKlientTest {
     @Test
     fun `feiler ved nedlasting av fil som ikke finnes`() {
         assertThatThrownBy {
-            val file = sftpClient(sftpServer).downloadFile("banan.txt")
+            val file = sftpClient(sftpServer).downloadFile(".", "banan.txt")
         }
             .isInstanceOf(FilsluseKlientImpl.SftpClientException.NoSuchFileOrDirectory::class.java)
     }

@@ -25,13 +25,34 @@ class FilsluseKlientImpl(
             val sftpChannel = connectAndOpenSftpChannel(jsch)
             val files = sftpChannel.ls(remoteDir)
             return files.map {
-                RemoteFilInfo(it.filename)
+                RemoteFilInfo(
+                    name = it.filename,
+                    size = it.attrs.size,
+                )
             }
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved scanning etter filer", t)
-//            log.open.error("Fikk feil ved scanning etter filer")
-//            log.secure.error("Fikk feil ved scanning etter filer", t)
             throw mapException(t)
+        }
+    }
+
+    override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo? {
+        val jsch = JSch()
+        val sftpChannel = connectAndOpenSftpChannel(jsch)
+        sftpChannel.cd(remoteDir)
+        return try {
+            val lsEntries = sftpChannel.ls(filnavn)
+            log.secure.info("Listet én fil: $filnavn -> $lsEntries")
+            if (lsEntries.size > 1) throw SftpClientException.MoreThanOneEntry("$filnavn -> $lsEntries")
+            lsEntries[0].let {
+                RemoteFilInfo(
+                    name = it.filename,
+                    size = it.attrs.size,
+                )
+            }
+        } catch (e: Throwable) {
+            println("${e.javaClass} msg=${e.message}")
+            null
         }
     }
 
@@ -55,10 +76,11 @@ class FilsluseKlientImpl(
         return sftpChannel
     }
 
-    override fun downloadFile(fileName: String): InputStream {
+    override fun downloadFile(remoteDir: String, fileName: String): InputStream {
         try {
             val jsch = JSch()
             val sftpChannel = connectAndOpenSftpChannel(jsch)
+            sftpChannel.cd(remoteDir)
             return sftpChannel.get(fileName)
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved nedlasting av fil: $fileName", t)
@@ -66,7 +88,7 @@ class FilsluseKlientImpl(
         }
     }
 
-    fun mapException(e: Throwable): Throwable {
+    private fun mapException(e: Throwable): Throwable {
         return if ("No such file or directory" == e.message) {
             SftpClientException.NoSuchFileOrDirectory(e)
         } else {
@@ -77,5 +99,6 @@ class FilsluseKlientImpl(
     sealed class SftpClientException(msg: String?, cause: Throwable?) : RuntimeException(msg, cause) {
         class NoSuchFileOrDirectory(throwable: Throwable?) : SftpClientException("", throwable)
         class Unmapped(msg: String?, throwable: Throwable?) : SftpClientException(msg, throwable)
+        class MoreThanOneEntry(msg: String) : SftpClientException(msg, null)
     }
 }

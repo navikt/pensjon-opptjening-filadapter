@@ -11,8 +11,9 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 
 @Configuration
 @Profile("dev-fss", "prod-fss")
-class PoppTokenProvider {
-    @Bean
+class TokenProviderConfig {
+
+    @Bean("poppTokenProvider")
     fun tokenProvider(
         @Value("\${POPP_API_ID}") appId: String,
         azureAdConfig: AzureAdTokenClientConfig,
