@@ -38,8 +38,23 @@ class AdminWebApi(
     fun overforFil(
         @RequestBody request: OverforFilRequest,
     ): ResponseEntity<OverforFilResponse> {
-        // prosesserFilService.prosesser(request.filnavn)
-        return ResponseEntity.ok(OverforFilResponse.feilet("x"))
+        val resultat = prosesserFilService.overførFil("inbound", request.filnavn, 1_000_000)
+        return when (resultat.status) {
+
+            ProsesserFilService.OverførResultat.Status.OK -> {
+                ResponseEntity.ok(OverforFilResponse.ok(resultat.filId!!))
+            }
+
+            ProsesserFilService.OverførResultat.Status.FINNES_IKKE_I_FILSLUSE -> {
+                ResponseEntity.internalServerError()
+                    .body(OverforFilResponse.feilet(null, "Finnes ikke i filsluse: ${resultat.filnavn}"))
+            }
+
+            ProsesserFilService.OverførResultat.Status.FEILET -> {
+                ResponseEntity.internalServerError()
+                    .body(OverforFilResponse.feilet(resultat.filId, "Overføring feilet: ${resultat.filnavn}"))
+            }
+        }
     }
 
     @GetMapping("/ping")
