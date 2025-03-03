@@ -26,7 +26,7 @@ class AdminWebApi(
     @GetMapping("/list")
     fun listFiler(): ResponseEntity<String> {
         log.open.info("List filer")
-        return filsluseKlient.scanForFiles("/inbound")
+        return filsluseKlient.scanForFiles("/outbound")
             .map {
                 it.name
             }
@@ -38,7 +38,7 @@ class AdminWebApi(
     fun overforFil(
         @RequestBody request: OverforFilRequest,
     ): ResponseEntity<OverforFilResponse> {
-        val resultat = prosesserFilService.overførFil("inbound", request.filnavn, 1_000_000)
+        val resultat = prosesserFilService.overførFil("outbound", request.filnavn, 1_000_000)
         return when (resultat.status) {
 
             ProsesserFilService.OverførResultat.Status.OK -> {
