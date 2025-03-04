@@ -41,7 +41,7 @@ class AdminWebApi(
         val resultat = prosesserFilService.overførFil(
             dir = "outbound",
             filnavn = request.filnavn,
-            blockSize = 1_000_000
+            blockSize = 100_000
         )
         return when (resultat.status) {
 
