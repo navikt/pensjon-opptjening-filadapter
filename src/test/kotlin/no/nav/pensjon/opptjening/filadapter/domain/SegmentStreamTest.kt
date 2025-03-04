@@ -1,6 +1,7 @@
 package no.nav.pensjon.opptjening.filadapter.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.`in`
 import org.junit.jupiter.api.Test
 import java.nio.charset.StandardCharsets
 
@@ -22,4 +23,35 @@ class SegmentStreamTest {
         assertThat(builder.toString()).isEqualTo(LANG_STRENG)
     }
 
+    @Test
+    fun `kan lese en inputstream i store segmenter`() {
+        val innhold = "abcdefghijklmnopqrstuvwxyz".repeat(5)
+        val segmentStream =
+            innhold
+            .byteInputStream(charset = StandardCharsets.UTF_8)
+            .let { LimitedInputStream(it, 17) }
+            .let { SegmentStream(it, 40) }
+        val segment1 = segmentStream.getSegment()
+        segmentStream.next()
+        val segment2 = segmentStream.getSegment()
+        segmentStream.next()
+        val segment3 = segmentStream.getSegment()
+        segmentStream.next()
+        val segment4 = segmentStream.getSegment()
+        segmentStream.next()
+        val isEnded = segmentStream.isAtEnd()
+        val part1 = String(segment1.bytes, StandardCharsets.UTF_8)
+        val part2 = String(segment2.bytes, StandardCharsets.UTF_8)
+        val part3 = String(segment3.bytes, StandardCharsets.UTF_8)
+        val part4 = String(segment4.bytes, StandardCharsets.UTF_8)
+
+        val resultat = part1 + part2 + part3 + part4
+        assertThat(resultat).isEqualTo(innhold)
+
+        assertThat(segment1.bytes.size).isEqualTo(40)
+        assertThat(segment2.bytes.size).isEqualTo(40)
+        assertThat(segment3.bytes.size).isEqualTo(40)
+        assertThat(segment4.bytes.size).isEqualTo(10)
+        assertThat(isEnded).isTrue()
+    }
 }

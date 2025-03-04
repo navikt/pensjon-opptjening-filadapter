@@ -23,14 +23,34 @@ class SegmentStream(val inputStream: InputStream, val blockSize: Int) {
     }
 
     private fun readNextBytes(segmentNo: Int): Segment? {
-        val readBytes = inputStream.read(buffer, 0, blockSize)
+        val readBytes = readBytes(0)
         return if (readBytes == -1) {
             null
         } else {
-            val bytes = ByteArray(readBytes)
-            System.arraycopy(buffer, 0, bytes, 0, readBytes)
-            Segment(segmentNo, bytes)
+            makeSegment(readBytes, segmentNo)
         }
+    }
+
+    private tailrec fun readBytes(offset: Int): Int {
+        val read = inputStream.read(buffer, offset, blockSize - offset)
+        return if (read == -1 && offset == 0) {
+            -1
+        } else if (read == -1) {
+            offset
+        } else if (offset + read == blockSize) {
+            blockSize
+        } else {
+            readBytes(offset + read)
+        }
+    }
+
+    private fun makeSegment(
+        readBytes: Int,
+        segmentNo: Int
+    ): Segment {
+        val bytes = ByteArray(readBytes)
+        System.arraycopy(buffer, 0, bytes, 0, readBytes)
+        return Segment(segmentNo, bytes)
     }
 
     data class Segment(

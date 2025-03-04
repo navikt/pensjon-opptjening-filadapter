@@ -38,7 +38,11 @@ class AdminWebApi(
     fun overforFil(
         @RequestBody request: OverforFilRequest,
     ): ResponseEntity<OverforFilResponse> {
-        val resultat = prosesserFilService.overførFil("outbound", request.filnavn, 1_000_000)
+        val resultat = prosesserFilService.overførFil(
+            dir = "outbound",
+            filnavn = request.filnavn,
+            blockSize = 1_000_000
+        )
         return when (resultat.status) {
 
             ProsesserFilService.OverførResultat.Status.OK -> {
