@@ -27,8 +27,9 @@ class ProsesserFilService(
             if (poppFil.filId == null) {
                 throw ProsesserFilServiceException("Lagring av metadata for fil feilet: $filnavn")
             }
-            val filStream = filsluseKlient.downloadFile(dir, filnavn)
-            lagreSegmenter(filStream, poppFil.filId, blockSize)
+            val fileDownload = filsluseKlient.downloadFile(dir, filnavn)
+            lagreSegmenter(fileDownload.getInputStream(), poppFil.filId, blockSize)
+            fileDownload.close()
             val validertOk = poppKlient.validerFil(poppFil.filId)
             if (!validertOk) {
                 log.open.error("Validering av fil feilet: $filnavn (${poppFil.filId}")

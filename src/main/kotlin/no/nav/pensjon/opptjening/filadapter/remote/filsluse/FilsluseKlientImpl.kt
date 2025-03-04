@@ -2,6 +2,7 @@ package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
+import com.jcraft.jsch.Session
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
@@ -20,10 +21,11 @@ class FilsluseKlientImpl(
     }
 
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
+        var sessionAndChannel: SessionAndChannel? = null
         try {
             val jsch = JSch()
-            val sftpChannel = connectAndOpenSftpChannel(jsch)
-            val files = sftpChannel.ls(remoteDir)
+            sessionAndChannel = connectAndOpenSftpChannel(jsch)
+            val files = sessionAndChannel.channel.ls(remoteDir)
             return files.map {
                 RemoteFilInfo(
                     name = it.filename,
@@ -33,15 +35,17 @@ class FilsluseKlientImpl(
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved scanning etter filer", t)
             throw mapException(t)
+        } finally {
+            sessionAndChannel?.let { close(it) }
         }
     }
 
     override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo? {
         val jsch = JSch()
-        val sftpChannel = connectAndOpenSftpChannel(jsch)
-        sftpChannel.cd(remoteDir)
+        val sessionAndChannel = connectAndOpenSftpChannel(jsch)
+        sessionAndChannel.channel.cd(remoteDir)
         return try {
-            val lsEntries = sftpChannel.ls(filnavn)
+            val lsEntries = sessionAndChannel.channel.ls(filnavn)
             log.secure.info("Listet én fil: $filnavn -> $lsEntries")
             if (lsEntries.size > 1) throw SftpClientException.MoreThanOneEntry("$filnavn -> $lsEntries")
             lsEntries[0].let {
@@ -53,10 +57,12 @@ class FilsluseKlientImpl(
         } catch (e: Throwable) {
             println("${e.javaClass} msg=${e.message}")
             null
+        } finally {
+            close(sessionAndChannel)
         }
     }
 
-    private fun connectAndOpenSftpChannel(jsch: JSch): ChannelSftp {
+    private fun connectAndOpenSftpChannel(jsch: JSch): SessionAndChannel {
         val privateKey = privateKey.toByteArray(StandardCharsets.UTF_8)
         val publicKey = publicKey.toByteArray(StandardCharsets.UTF_8)
         jsch.addIdentity(
@@ -73,15 +79,30 @@ class FilsluseKlientImpl(
         log.open.info("SFTP Client: Connected to host")
         val sftpChannel = session.openChannel("sftp") as ChannelSftp
         sftpChannel.connect()
-        return sftpChannel
+        return SessionAndChannel(
+            session = session,
+            channel = sftpChannel
+        )
     }
 
-    override fun downloadFile(remoteDir: String, fileName: String): InputStream {
+    private fun close(sessionAndChannel: SessionAndChannel) {
+        sessionAndChannel.session.disconnect()
+        sessionAndChannel.channel.disconnect()
+    }
+
+    fun close(fileDownload: FileDownloadImpl) {
+        close(fileDownload.sessionAndChannel)
+    }
+
+    override fun downloadFile(remoteDir: String, fileName: String): FilsluseKlient.FileDownload {
         try {
             val jsch = JSch()
-            val sftpChannel = connectAndOpenSftpChannel(jsch)
-            sftpChannel.cd(remoteDir)
-            return sftpChannel.get(fileName)
+            val sessionAndChannel = connectAndOpenSftpChannel(jsch)
+            sessionAndChannel.channel.cd(remoteDir)
+            return FileDownloadImpl(
+                input = sessionAndChannel.channel.get(fileName),
+                sessionAndChannel = sessionAndChannel
+            )
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved nedlasting av fil: $fileName", t)
             throw mapException(t)
@@ -100,5 +121,26 @@ class FilsluseKlientImpl(
         class NoSuchFileOrDirectory(throwable: Throwable?) : SftpClientException("", throwable)
         class Unmapped(msg: String?, throwable: Throwable?) : SftpClientException(msg, throwable)
         class MoreThanOneEntry(msg: String) : SftpClientException(msg, null)
+    }
+
+    data class SessionAndChannel(val session: Session, val channel: ChannelSftp) {
+        fun close() {
+            channel.disconnect()
+            session.disconnect()
+        }
+    }
+
+    data class FileDownloadImpl(
+        val input: InputStream,
+        val sessionAndChannel: SessionAndChannel,
+    ): FilsluseKlient.FileDownload {
+        override fun getInputStream(): InputStream {
+            return input
+        }
+
+        override fun close() {
+            sessionAndChannel.close()
+        }
+
     }
 }

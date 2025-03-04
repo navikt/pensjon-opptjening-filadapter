@@ -54,9 +54,9 @@ class FilsluseKlientTest {
     fun `kan laste ned en fil som finnes`() {
         val forventetInnhold = TestSftpConfig.sftpFilePath.resolve("testfile.txt").readBytes()
         println("port: ${sftpServer.getPort()}")
-        val file = sftpClient(sftpServer).downloadFile(".", "testfile.txt")
-        assertThat(file).isNotNull()
-        val nedlastetFil = file.readBytes()
+        val fileDownload = sftpClient(sftpServer).downloadFile(".", "testfile.txt")
+        assertThat(fileDownload.getInputStream()).isNotNull()
+        val nedlastetFil = fileDownload.getInputStream().readBytes()
         assertThat(nedlastetFil).isEqualTo(forventetInnhold)
     }
 
