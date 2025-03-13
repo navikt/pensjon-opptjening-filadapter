@@ -4,10 +4,12 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.LagerstatusResponse
 import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.LagreFilSegmentRequest
 import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilRequest
 import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilResponse
 import no.nav.pensjon.opptjening.filadapter.utils.JsonUtils.toJson
+import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -32,7 +34,7 @@ internal class PoppKlientTest {
                         .willReturn(
                             aResponse()
                                 .withHeader("Content-Type", "application/json")
-                                .withStatus(202)
+                                .withStatus(200)
                                 .withTransformerParameter("historiske", "banan")
                                 .withBody(response.toJson())
                         )
@@ -91,6 +93,30 @@ internal class PoppKlientTest {
         }
             .isInstanceOf(PoppClientException.ResponseWithNoBody::class.java)
     }
+
+    @Test
+    fun `kan hente lagerstatus`() {
+        val httpResponseBody = LagerstatusResponse(
+            antallLagret = 2,
+            antallLagres = 0,
+        )
+
+        wiremock.givenThat(
+            post(urlPathEqualTo("/fil/lagerstatus"))
+                .willReturn(
+                    aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withStatus(200)
+                        .withTransformerParameter("historiske", "banan")
+                        .withBody(
+                            httpResponseBody.toJson()
+                        )
+                )
+        )
+        val response = poppKlient.hentLagerstatus("hello.txt")
+        assertThat(response).isEqualTo(httpResponseBody)
+    }
+
 
     @Test
     fun `opprettFil som lykkes returnerer responsobjektet`() {

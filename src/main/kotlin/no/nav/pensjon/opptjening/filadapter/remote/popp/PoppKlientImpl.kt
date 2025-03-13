@@ -35,6 +35,14 @@ class PoppKlientImpl(
         )
     }
 
+    override fun hentLagerstatus(filnavn: String): LagerstatusResponse {
+        return callPopp(
+            url = "$baseUrl/fil/lagerstatus",
+            body = LagerstatusRequest(filnavn),
+            responseType = LagerstatusResponse::class.java,
+        )
+    }
+
     override fun validerFil(id: UUID): Boolean {
         val response = callPopp(
             url = "$baseUrl/fil/valider",

@@ -1,10 +1,7 @@
 package no.nav.pensjon.opptjening.filadapter.domain
 
 import no.nav.pensjon.opptjening.filadapter.remote.popp.PoppKlient
-import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.LagreFilSegmentRequest
-import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.LagreFilSegmentResponse
-import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilRequest
-import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.OpprettFilResponse
+import no.nav.pensjon.opptjening.filadapter.remote.popp.domain.*
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import java.util.*
@@ -41,6 +38,10 @@ class TestPoppKlient : PoppKlient {
     override fun lagreFilSegment(request: LagreFilSegmentRequest): LagreFilSegmentResponse {
         fileData[request.filId]!!.outputStream.write(request.data)
         return LagreFilSegmentResponse.ok()
+    }
+
+    override fun hentLagerstatus(filnavn: String): LagerstatusResponse {
+        TODO("Not yet implemented")
     }
 
     fun hentInnhold(id: UUID): ByteArray? {
