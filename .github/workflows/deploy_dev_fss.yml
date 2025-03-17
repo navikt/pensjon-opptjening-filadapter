@@ -26,13 +26,6 @@ jobs:
           export TZ=CET
           echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-      # SETTER IMAGE VARIABEL
-      - name: 'Setting Image Variabel'
-        run: echo "IMAGE=docker.pkg.github.com/${{ github.repository }}/pensjon-opptjening-filadapter:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-
-      # SETTER IMAGE GHCR VARIABEL
-      - name: 'Setting Image ghcr Variabel'
-        run: echo "IMAGE_GHCR=ghcr.io/${{ github.repository }}/pensjon-opptjening-filadapter:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
       # JAVA 21
       - name: 'Java 21'
@@ -69,4 +62,5 @@ jobs:
         env:
           RESOURCE: nais/dev-fss.yml
           CLUSTER: dev-fss
-          IMAGE: ${{ env.IMAGE_GHCR }}
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}

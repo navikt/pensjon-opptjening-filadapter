@@ -1,7 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
-import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlientImpl
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlientImpl.*
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.RemoteFilInfo
 import java.io.ByteArrayInputStream
@@ -17,7 +16,7 @@ class MockFilsluseKlient : FilsluseKlient {
         )
     }
 
-    override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo? {
+    override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo {
         return RemoteFilInfo(
             name = "filnavn.txt",
             10,

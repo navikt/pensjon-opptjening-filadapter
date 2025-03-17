@@ -1,7 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.domain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.`in`
 import org.junit.jupiter.api.Test
 import java.nio.charset.StandardCharsets
 
