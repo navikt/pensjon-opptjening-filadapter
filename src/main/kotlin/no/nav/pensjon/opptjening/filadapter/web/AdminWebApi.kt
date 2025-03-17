@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.web
 
+import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
 import no.nav.pensjon.opptjening.filadapter.domain.ProsesserFilService
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*
 class AdminWebApi(
     val filsluseKlient: FilsluseKlient,
     val prosesserFilService: ProsesserFilService,
+    val lagerstatusService: LagerstatusService,
 ) {
     companion object {
         private val log = NAVLog(AdminWebApi::class)
@@ -28,7 +30,10 @@ class AdminWebApi(
         log.open.info("List filer")
         return filsluseKlient.scanForFiles("/outbound")
             .map {
-                it.name
+                val filnavn = it.name
+                val size = it.size
+                val erlagret = lagerstatusService.erLagret(filnavn)
+                "$filnavn[size=$size ${if (erlagret) "lagret" else ""}]"
             }
             .joinToString("\n")
             .let { ResponseEntity.ok(it) }

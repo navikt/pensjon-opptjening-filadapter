@@ -40,8 +40,12 @@ class TestPoppKlient : PoppKlient {
         return LagreFilSegmentResponse.ok()
     }
 
+    // TODO: implementere denne til å sjekke de cachede filene
     override fun hentLagerstatus(filnavn: String): LagerstatusResponse {
-        TODO("Not yet implemented")
+        return LagerstatusResponse(
+            antallLagret = 0,
+            antallLagres = 0,
+        )
     }
 
     fun hentInnhold(id: UUID): ByteArray? {

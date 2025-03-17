@@ -26,12 +26,14 @@ class FilsluseKlientImpl(
             val jsch = JSch()
             sessionAndChannel = connectAndOpenSftpChannel(jsch)
             val files = sessionAndChannel.channel.ls(remoteDir)
-            return files.map {
-                RemoteFilInfo(
-                    name = it.filename,
-                    size = it.attrs.size,
-                )
-            }
+            return files
+                .filter { !it.attrs.isDir }
+                .map {
+                    RemoteFilInfo(
+                        name = it.filename,
+                        size = it.attrs.size,
+                    )
+                }
         } catch (t: Throwable) {
             log.secure.info("Fikk feil ved scanning etter filer", t)
             throw mapException(t)
@@ -133,7 +135,7 @@ class FilsluseKlientImpl(
     data class FileDownloadImpl(
         val input: InputStream,
         val sessionAndChannel: SessionAndChannel,
-    ): FilsluseKlient.FileDownload {
+    ) : FilsluseKlient.FileDownload {
         override fun getInputStream(): InputStream {
             return input
         }
