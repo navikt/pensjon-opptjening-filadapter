@@ -43,14 +43,17 @@ jobs:
           cache: 'gradle'
 
       # BYGGER DOCKER CONTAINER
-      - name: 'Bygg og publiser docker image'
-        run: |
-          ./gradlew clean build
-          docker build --tag ${{ env.IMAGE }} .
-          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${{ secrets.GITHUB_TOKEN }}
-          docker push ${{ env.IMAGE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Build and push docker image'
+        uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: pensjonopptjening
+          tag: ${{ github.sha }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # required, but is defined as an organization variable
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # required, but is defined as an organization secret
 
       # UPLOAD FAILED TEST RESULTS
       - name: 'Upload test results'

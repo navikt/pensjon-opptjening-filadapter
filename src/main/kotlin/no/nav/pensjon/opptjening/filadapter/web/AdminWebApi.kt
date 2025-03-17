@@ -28,14 +28,12 @@ class AdminWebApi(
     @GetMapping("/list")
     fun listFiler(): ResponseEntity<String> {
         log.open.info("List filer")
-        return filsluseKlient.scanForFiles("/outbound")
-            .map {
-                val filnavn = it.name
-                val size = it.size
-                val erlagret = lagerstatusService.erLagret(filnavn)
-                "$filnavn[size=$size ${if (erlagret) "lagret" else ""}]"
-            }
-            .joinToString("\n")
+        return filsluseKlient.scanForFiles("/outbound").joinToString("\n") {
+            val filnavn = it.name
+            val size = it.size
+            val erlagret = lagerstatusService.erLagret(filnavn)
+            "$filnavn[size=$size ${if (erlagret) "lagret" else ""}]"
+        }
             .let { ResponseEntity.ok(it) }
     }
 
