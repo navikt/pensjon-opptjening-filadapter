@@ -3,12 +3,12 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val navTokenSupportVersion = "5.0.17"
+val navTokenSupportVersion = "5.0.19"
 val logbackEncoderVersion = "8.0"
 val jacksonVersion = "2.18.2"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.3"
-val wiremockVersion = "3.12.0"
+val wiremockVersion = "3.12.1"
 val micrometerRegistryPrometheusVersion = "1.14.3"
 val mockitoKotlinVersion = "5.4.0"
 val jsonUnitVersion = "4.1.0"
