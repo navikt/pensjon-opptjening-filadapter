@@ -15,6 +15,7 @@ import java.util.*
 class ProsesserFilService(
     val poppKlient: PoppKlient,
     val filsluseKlient: FilsluseKlient,
+    val lagerstatusService: LagerstatusService,
 ) {
     companion object {
         val log = NAVLog(ProsesserFilService::class)
@@ -35,6 +36,7 @@ class ProsesserFilService(
                 log.open.error("Validering av fil feilet: $filnavn (${poppFil.filId}")
                 OverførResultat.feilet(filnavn, poppFil.filId)
             } else {
+                lagerstatusService.settLagret(filnavn)
                 OverførResultat.ok(filnavn, poppFil.filId)
             }
         } catch (ex: Exception) {

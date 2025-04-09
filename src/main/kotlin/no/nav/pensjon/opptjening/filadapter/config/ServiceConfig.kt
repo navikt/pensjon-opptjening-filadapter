@@ -1,5 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
+import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
 import no.nav.pensjon.opptjening.filadapter.domain.ProsesserFilService
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.pensjon.opptjening.filadapter.remote.popp.PoppKlient
@@ -17,6 +18,7 @@ class ServiceConfig {
         return ProsesserFilService(
             poppKlient = poppKlient,
             filsluseKlient = filsluseKlient,
+            lagerstatusService = LagerstatusService(poppKlient)
         )
     }
 

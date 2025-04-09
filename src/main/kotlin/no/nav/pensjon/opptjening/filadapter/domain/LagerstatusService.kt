@@ -17,6 +17,10 @@ class LagerstatusService(
         return cache[filnavn]!!
     }
 
+    fun settLagret(filnavn: String) {
+        cache[filnavn] = true
+    }
+
     fun clearCache() {
         cache.clear()
     }

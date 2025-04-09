@@ -76,7 +76,7 @@ dependencies {
 
 tasks.test {
     maxParallelForks = 1
-    useJUnitPlatform()
+//    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {

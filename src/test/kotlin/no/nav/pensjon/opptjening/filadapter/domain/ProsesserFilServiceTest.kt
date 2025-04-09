@@ -36,7 +36,12 @@ class ProsesserFilServiceTest {
     @Test
     fun `kan lagre en fil`() {
         val poppKlient = TestPoppKlient()
-        val service = ProsesserFilService(poppKlient, filsluseKlient = sftpClient(sftpServer))
+        val lagerstatusService = LagerstatusService(poppKlient)
+        val service = ProsesserFilService(
+            poppKlient = poppKlient,
+            filsluseKlient = sftpClient(sftpServer),
+            lagerstatusService = lagerstatusService
+        )
         val fil = this.javaClass.getResource("/testfil.txt")!!.toURI().let { Path.of(it) }
         val id = service.prosesser(fil, 8)
         assertThat(id).isNotNull
@@ -47,16 +52,26 @@ class ProsesserFilServiceTest {
     @Test
     fun `kan overføre en fil`() {
         val poppKlient = TestPoppKlient()
-        val service = ProsesserFilService(poppKlient, filsluseKlient = sftpClient(sftpServer))
+        val lagerstatusService = LagerstatusService(poppKlient)
+        val service = ProsesserFilService(
+            poppKlient = poppKlient,
+            filsluseKlient = sftpClient(sftpServer),
+            lagerstatusService = lagerstatusService,
+        )
         val fil = this.javaClass.getResource("/testfil.txt")!!.toURI().let { Path.of(it) }
         val resultat = service.overførFil(".", "testfile.txt", blockSize = 8)
         assertThat(resultat.status).isEqualTo(ProsesserFilService.OverførResultat.Status.OK)
+        assertThat(lagerstatusService.erLagret("testfile.txt")).isTrue()
     }
 
     @Test
     fun `returner FINNES_IKKE_I_FILSLUSE dersom filen ikke finnes i filsluse`() {
         val poppKlient = TestPoppKlient()
-        val service = ProsesserFilService(poppKlient, filsluseKlient = sftpClient(sftpServer))
+        val service = ProsesserFilService(
+            poppKlient,
+            filsluseKlient = sftpClient(sftpServer),
+            lagerstatusService = LagerstatusService(poppKlient),
+        )
         val resultat = service.overførFil(".", "finnesikke.txt", blockSize = 8)
         assertThat(resultat.status).isEqualTo(ProsesserFilService.OverførResultat.Status.FINNES_IKKE_I_FILSLUSE)
     }
