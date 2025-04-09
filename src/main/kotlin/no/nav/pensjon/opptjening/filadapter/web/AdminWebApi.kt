@@ -4,6 +4,7 @@ import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
 import no.nav.pensjon.opptjening.filadapter.domain.ProsesserFilService
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
+import no.nav.pensjon.opptjening.filadapter.web.dto.ListFilerResponse
 import no.nav.pensjon.opptjening.filadapter.web.dto.OverforFilRequest
 import no.nav.pensjon.opptjening.filadapter.web.dto.OverforFilResponse
 import no.nav.security.token.support.core.api.Protected
@@ -26,14 +27,19 @@ class AdminWebApi(
     }
 
     @GetMapping("/list")
-    fun listFiler(): ResponseEntity<String> {
+    fun listFiler(): ResponseEntity<ListFilerResponse> {
         log.open.info("List filer")
-        return filsluseKlient.scanForFiles("/outbound").joinToString("\n") {
+        return filsluseKlient.scanForFiles("/outbound").map {
             val filnavn = it.name
             val size = it.size
             val erlagret = lagerstatusService.erLagret(filnavn)
-            "$filnavn[size=$size ${if (erlagret) "lagret" else ""}]"
+            ListFilerResponse.FilMedStatus(
+                filnavn = filnavn,
+                size = size,
+                lagret = erlagret,
+            )
         }
+            .let { ListFilerResponse(it) }
             .let { ResponseEntity.ok(it) }
     }
 
