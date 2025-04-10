@@ -1,0 +1,54 @@
+name: Bygg og deploy pensjon-opptjening-filadapter til dev-fss
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  tag_build_and_deploy:
+    name: 'Build, deploy and tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: 'Check available disk space on /tmp (1)'
+        run: df -h /tmp
+
+      - name: 'Pull repo'
+        uses: actions/checkout@v4
+
+      - name: 'Java 21'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+          cache: 'gradle'
+
+      - name: 'Build artifact'
+        run: |
+          ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Build and push docker image'
+        uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: pensjonopptjening
+
+      - name: 'Upload test results'
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-test-results
+          path: build/reports/tests/test
+
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}

@@ -18,13 +18,13 @@ spec:
     enabled: true
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: dev-fss
+      value: prod-fss
     - name: POPP_URL
       value: https://pensjon-popp.prod-fss-pub.nais.io/popp/api
     - name: POPP_API_ID
-      value: dev-fss.pensjonopptjening.pensjon-popp-q2
+      value: prod-fss.pensjonopptjening.pensjon-popp
     - name: FILSLUSE_HOST
-      value: filmottak.preprod.local
+      value: filmottak.adeo.no
     - name: FILSLUSE_PORT
       value: "22"
     - name: FILSLUSE_USERNAME
@@ -33,19 +33,17 @@ spec:
     - secret: filadapter-sshkey
   image: {{ image }}
   ingresses:
-    - https://pensjon-opptjening-filadapter.intern.dev.nav.no
+    - https://pensjon-opptjening-filadapter.intern.nav.no
   accessPolicy:
     outbound:
-      external:
-        - host: pensjon-popp.prod-fss-pub.nais.io
-        - host: filmottak.TODO-PROD.finnesikke.preprod.nav.no
-          ports:
-            - port: 22
     inbound:
       rules:
-        - application: azure-token-generator
-          namespace: aura
-          cluster: dev-gcp
+        - application: pensjon-opptjening-admin-web
+          namespace: pensjonopptjening
+          cluster: prod-gcp
+          permissions:
+            roles:
+              - fil.lagre
 
   liveness:
     path: /actuator/health/liveness
