@@ -45,10 +45,10 @@ jobs:
           name: failed-test-results
           path: build/reports/tests/test
 
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss'
+      - name: 'Deploy pensjon-opptjening-filadapter to prod-fss'
         uses: nais/deploy/actions/deploy@v2
         env:
-          RESOURCE: nais/dev-fss.yml
-          CLUSTER: dev-fss
+          RESOURCE: nais/prod-fss.yml
+          CLUSTER: prod-fss
           IMAGE: ${{ steps.docker-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
