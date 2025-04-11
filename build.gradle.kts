@@ -63,6 +63,7 @@ dependencies {
     implementation("org.apache.sshd:sshd-sftp:$apacheSshdVersion")
     implementation("com.github.mwiede:jsch:$jschVersion")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("ch.qos.logback:logback-access:1.5.18")
 
     // Test - setup
     testImplementation(kotlin("test"))
