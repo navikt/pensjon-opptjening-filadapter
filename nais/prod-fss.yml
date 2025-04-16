@@ -33,7 +33,7 @@ spec:
     - secret: filadapter-sshkey
   image: {{ image }}
   ingresses:
-    - https://pensjon-opptjening-filadapter.intern.nav.no
+    - "https://pensjon-opptjening-filadapter.prod-fss-pub.nais.io"
   accessPolicy:
     outbound:
     inbound:
