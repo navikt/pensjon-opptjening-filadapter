@@ -1,4 +1,4 @@
-name: Bygg og deploy pensjon-opptjening-filadapter til dev-fss
+name: 'Bygg og deploy pensjon-opptjening-filadapter til prod-fss'
 
 on:
   push:
