@@ -36,6 +36,7 @@ class PoppKlientImpl(
     }
 
     override fun hentLagerstatus(filnavn: String): LagerstatusResponse {
+        log.open.info("Henter lagerStatus for $filnavn fra $baseUrl/fil/lagerstatus")
         return callPopp(
             url = "$baseUrl/fil/lagerstatus",
             body = LagerstatusRequest(filnavn),

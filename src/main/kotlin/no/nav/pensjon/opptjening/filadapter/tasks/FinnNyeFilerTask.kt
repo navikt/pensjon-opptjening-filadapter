@@ -15,7 +15,7 @@ class FinnNyeFilerTask(
     fun finnNyeFiler() {
         try {
             log.open.info("Scanner etter nye filer")
-            val filer = filsluseKlient.scanForFiles("/")
+            val filer = filsluseKlient.scanForFiles("/outbound")
             log.open.info("Scannet og fant ${filer.size} filer")
             log.open.info("Scannet og fant ${filer.size} filer")
             filer.forEach {
