@@ -20,7 +20,7 @@ spec:
     - name: SPRING_PROFILES_ACTIVE
       value: prod-fss
     - name: POPP_URL
-      value: https://pensjon-popp.prod-fss-pub.nais.io/popp/api
+      value: https://pensjon-popp.intern.nav.no/popp/api
     - name: POPP_API_ID
       value: prod-fss.pensjonopptjening.pensjon-popp
     - name: FILSLUSE_HOST
