@@ -36,6 +36,7 @@ class ProsesserFilService(
                 log.open.error("Validering av fil feilet: $filnavn (${poppFil.filId}")
                 OverførResultat.feilet(filnavn, poppFil.filId)
             } else {
+                log.open.info("$filnavn er bekreftet overført til POPP")
                 lagerstatusService.settLagret(filnavn)
                 OverførResultat.ok(filnavn, poppFil.filId)
             }

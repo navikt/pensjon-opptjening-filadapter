@@ -7,8 +7,6 @@ class LagerstatusService(
 ) {
     val cache: MutableMap<String, Boolean> = mutableMapOf()
 
-//    data class Status(val lagret: Boolean, val sjekket: LocalDateTime)
-
     fun erLagret(filnavn: String) : Boolean {
         if (!cache.containsKey(filnavn)) {
             val status = poppKlient.hentLagerstatus(filnavn)
