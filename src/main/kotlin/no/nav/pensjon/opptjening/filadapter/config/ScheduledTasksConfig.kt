@@ -1,7 +1,10 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
+import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
+import no.nav.pensjon.opptjening.filadapter.domain.OverforNesteFilService
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.pensjon.opptjening.filadapter.tasks.FinnNyeFilerTask
+import no.nav.pensjon.opptjening.filadapter.tasks.OverforNesteFilTask
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -13,14 +16,25 @@ import java.util.concurrent.ThreadPoolExecutor
 @EnableScheduling
 @Profile("dev-fss", "prod-fss")
 class ScheduledTasksConfig {
+
     @Bean
     fun statusCheckTask(
         filsluseKlient: FilsluseKlient,
     ): FinnNyeFilerTask {
         return FinnNyeFilerTask(
-            filsluseKlient = filsluseKlient
+            filsluseKlient = filsluseKlient,
         )
     }
+
+    @Bean
+    fun overforNesteFilerService(
+        overforNesteFilService: OverforNesteFilService,
+    ): OverforNesteFilTask {
+        return OverforNesteFilTask(
+            overforNesteFilService,
+        )
+    }
+
 
     @Bean("scheduledTasksExecutor")
     fun threadpoolExecutor(): ThreadPoolTaskExecutor {

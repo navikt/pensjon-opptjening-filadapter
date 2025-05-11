@@ -1,6 +1,7 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
 import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
+import no.nav.pensjon.opptjening.filadapter.domain.OverforNesteFilService
 import no.nav.pensjon.opptjening.filadapter.domain.ProsesserFilService
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.pensjon.opptjening.filadapter.remote.popp.PoppKlient
@@ -22,5 +23,14 @@ class ServiceConfig {
         )
     }
 
-
+    @Bean
+    fun overforNesteFilService(
+        filsluseKlient: FilsluseKlient,
+        poppKlient: PoppKlient, lagerstatusService: LagerstatusService,
+    ): OverforNesteFilService {
+        return OverforNesteFilService(
+            filsluseKlient = filsluseKlient,
+            lagerstatusService = lagerstatusService,
+        )
+    }
 }
