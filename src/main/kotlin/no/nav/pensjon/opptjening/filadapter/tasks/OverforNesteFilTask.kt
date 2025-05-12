@@ -11,7 +11,7 @@ class OverforNesteFilTask(
         val log = NAVLog(OverforNesteFilTask::class)
     }
 
-    @Scheduled(fixedDelay = 180_000) // 3 minutter, 180000ms)
+    @Scheduled(fixedDelay = 30_000) // 30 sekunder
     fun overforNesteFilService() {
         try {
             overforNesteFilService.overforEnUteståendeFil()
