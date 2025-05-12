@@ -26,11 +26,13 @@ class ServiceConfig {
     @Bean
     fun overforNesteFilService(
         filsluseKlient: FilsluseKlient,
-        poppKlient: PoppKlient, lagerstatusService: LagerstatusService,
+        lagerstatusService: LagerstatusService,
+        prosesserFilService: ProsesserFilService,
     ): OverforNesteFilService {
         return OverforNesteFilService(
             filsluseKlient = filsluseKlient,
             lagerstatusService = lagerstatusService,
+            prosesserFilService = prosesserFilService,
         )
     }
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 class OverforNesteFilService(
     val filsluseKlient: FilsluseKlient,
     val lagerstatusService: LagerstatusService,
+    val prosesserFilService: ProsesserFilService,
 ) {
     companion object {
         private val log : Logger = LoggerFactory.getLogger(OverforNesteFilService::class.java)
@@ -29,8 +30,26 @@ class OverforNesteFilService(
     fun overforEnUteståendeFil() {
         finnFilerHvisIngenUtestående()
         utestående.firstOrNull()?.let {
-            log.info("overfører $it (simulert)")
-            utestående.remove(it)
+            log.info("overfører $it")
+            val resultat = prosesserFilService.overførFil(
+                dir = "outbound",
+                filnavn = it,
+                blockSize = 100_000
+            )
+            when (resultat.status) {
+                ProsesserFilService.OverførResultat.Status.OK -> {
+                    log.info("fil overført $it")
+                    utestående.remove(it)
+                }
+
+                ProsesserFilService.OverførResultat.Status.FINNES_IKKE_I_FILSLUSE -> {
+                    log.warn("fil forsøkt overført, men fantes ikke i filsluse: $it")
+                    utestående.remove(it)
+                }
+                ProsesserFilService.OverførResultat.Status.FEILET -> {
+                    log.error("overføring av fil feilet: $it")
+                }
+            }
         }
     }
 }
