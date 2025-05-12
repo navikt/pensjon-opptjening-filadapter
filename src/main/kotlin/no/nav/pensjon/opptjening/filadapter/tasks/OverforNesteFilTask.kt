@@ -14,7 +14,7 @@ class OverforNesteFilTask(
     @Scheduled(fixedDelay = 180_000) // 3 minutter, 180000ms)
     fun overforNesteFilService() {
         try {
-            overforNesteFilService.overforEnUteståendeFil()
+            // overforNesteFilService.overforEnUteståendeFil()
         } catch (t: Throwable) {
             log.open.info("OverforNesteFilTask feilet")
             log.secure.info("OverforNesteFilTask feilet", t)

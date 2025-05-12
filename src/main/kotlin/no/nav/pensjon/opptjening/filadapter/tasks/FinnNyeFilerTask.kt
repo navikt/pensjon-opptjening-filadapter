@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.filadapter.tasks
 
-import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
 import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import org.springframework.scheduling.annotation.Scheduled
