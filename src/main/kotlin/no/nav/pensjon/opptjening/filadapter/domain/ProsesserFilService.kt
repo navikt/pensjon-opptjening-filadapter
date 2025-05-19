@@ -15,7 +15,6 @@ import java.util.*
 class ProsesserFilService(
     val poppKlient: PoppKlient,
     val filsluseKlient: FilsluseKlient,
-    val lagerstatusService: LagerstatusService,
 ) {
     companion object {
         val log = NAVLog(ProsesserFilService::class)
@@ -37,7 +36,6 @@ class ProsesserFilService(
                 OverførResultat.feilet(filnavn, poppFil.filId)
             } else {
                 log.open.info("$filnavn er bekreftet overført til POPP")
-                lagerstatusService.settLagret(filnavn)
                 OverførResultat.ok(filnavn, poppFil.filId)
             }
         } catch (ex: Exception) {

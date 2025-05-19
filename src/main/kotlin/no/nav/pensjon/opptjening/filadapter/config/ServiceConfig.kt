@@ -19,7 +19,6 @@ class ServiceConfig {
         return ProsesserFilService(
             poppKlient = poppKlient,
             filsluseKlient = filsluseKlient,
-            lagerstatusService = LagerstatusService(poppKlient)
         )
     }
 
