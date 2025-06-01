@@ -10,5 +10,6 @@ class Application
 fun main(args: Array<String>) {
     val log = NAVLog(Application::class)
     log.open.info("Starting application")
+    log.team.info("Starting application")
     runApplication<Application>(*args)
 }
