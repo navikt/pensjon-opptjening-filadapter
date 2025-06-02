@@ -52,6 +52,11 @@
         <logger name="secure" additivity="false">
             <appender-ref ref="secureLog"/>
         </logger>
+
+        <logger name="team" additivity="false">
+            <appender-ref ref="team-logs"/>
+        </logger>
+
     </springProfile>
 
     <springProfile name="local">

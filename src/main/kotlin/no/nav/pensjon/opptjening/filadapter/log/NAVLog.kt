@@ -7,5 +7,5 @@ import kotlin.reflect.KClass
 class NAVLog(kclass: KClass<*>) {
     val open : Logger = LoggerFactory.getLogger(kclass.java)
     val secure : Logger = LoggerFactory.getLogger("secure")
-    val team: Logger = LoggerFactory.getLogger("team-logs")
+    val team: Logger = LoggerFactory.getLogger("team")
 }
