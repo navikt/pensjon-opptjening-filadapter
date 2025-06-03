@@ -35,8 +35,8 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: 'logging'
-          namespace: 'nais-system'
+        - application: logging
+          namespace: nais-system
     inbound:
       rules:
         - application: pensjon-opptjening-admin-web
