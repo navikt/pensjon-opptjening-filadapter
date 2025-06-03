@@ -16,11 +16,9 @@ class FinnNyeFilerTask(
         try {
             log.open.info("Scanner etter nye filer")
             val filer = filsluseKlient.scanForFiles("/outbound")
-            log.open.info("X Scannet og fant ${filer.size} filer")
-            log.team.info("X Scannet og fant ${filer.size} filer")
+            log.open.info("Scannet og fant ${filer.size} filer")
             filer.forEach {
-                log.secure.info("X Remote file: $it")
-                log.team.info("X Remote file: $it")
+                log.secure.info("Remote file: $it")
             }
         } catch (t: Throwable) {
             log.open.info("Scanning av filer feilet")
