@@ -20,6 +20,7 @@ class FinnNyeFilerTask(
             log.open.info("Scannet og fant ${filer.size} filer")
             filer.forEach {
                 log.secure.info("Remote file: $it")
+                log.team.info("Remote file: $it")
             }
         } catch (t: Throwable) {
             log.open.info("Scanning av filer feilet")
