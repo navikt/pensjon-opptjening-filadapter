@@ -87,7 +87,7 @@ class PoppKlientImpl(
                 try {
                     body.mapToObject(responseType)
                 } catch (t: Throwable) {
-                    log.open.error("Kunne ikke lese svar fra popp", t)
+                    log.open.error("Kunne ikke lese svar fra popp")
                     log.secure.error("Kunne ikke lese svar fra popp", t)
                     log.secure.error("response ${response.code} ${response.message}")
                     log.secure.error("body: $body")
