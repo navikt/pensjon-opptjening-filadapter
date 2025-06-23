@@ -20,6 +20,7 @@ class PoppKlientImpl(
     }
 
     override fun opprettFil(oppprettFilRequest: OpprettFilRequest): OpprettFilResponse {
+        log.open.info("Oppretter fil med navn ${oppprettFilRequest.fileName} i POPP")
         return callPopp(
             url = "$baseUrl/fil/opprett",
             body = oppprettFilRequest,
@@ -28,6 +29,7 @@ class PoppKlientImpl(
     }
 
     override fun lagreFilSegment(lagreFilSegmentRequest: LagreFilSegmentRequest): LagreFilSegmentResponse {
+        log.open.info("Lagrer filsegment for filId ${lagreFilSegmentRequest.filId} i POPP")
         return callPopp(
             url = "$baseUrl/fil/leggtil",
             body = lagreFilSegmentRequest,
@@ -45,6 +47,7 @@ class PoppKlientImpl(
     }
 
     override fun validerFil(id: UUID): Boolean {
+        log.open.info("Validerer fil med id $id i POPP")
         val response = callPopp(
             url = "$baseUrl/fil/valider",
             body = ValiderFilRequest(id),
