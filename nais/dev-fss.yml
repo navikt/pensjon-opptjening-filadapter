@@ -28,7 +28,7 @@ spec:
     - name: FILSLUSE_USERNAME
       value: srvPopp
     - name: JAVA_OPTS
-      value: "-Xms1g -Xmx8g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200"
+      value: "-Xms8g -Xmx15g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200"
   envFrom:
     - secret: filadapter-sshkey
   image: {{ image }}
