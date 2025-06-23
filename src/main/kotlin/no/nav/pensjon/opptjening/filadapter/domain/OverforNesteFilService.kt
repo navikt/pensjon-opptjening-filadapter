@@ -27,7 +27,7 @@ class OverforNesteFilService(
 
             val (alleredeLagret, nyeUtestående) = kandidater.partition { lagerstatusService.erLagret(it.name) }
 
-            log.info("Fant ${kandidater.size} kandidatfiler. ${alleredeLagret.size} var allerede overført, ${nyeUtestående.size} nye filer lagt til for overføring.")
+            log.info("Søkt etter nye kandidatfiler. Fant ${kandidater.size} nye kandidatfiler. Av disse nye var ${alleredeLagret.size} allerede overført, ${nyeUtestående.size} nye filer lagt til for overføring.")
 
             alleredeProsessert.addAll(alleredeLagret)
             utestående.addAll(nyeUtestående)
