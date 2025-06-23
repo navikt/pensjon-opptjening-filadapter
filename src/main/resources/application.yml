@@ -21,3 +21,5 @@ server:
   tomcat:
     accesslog:
       enabled: true
+java:
+  opts: "-Xms512m -Xmx2048m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
