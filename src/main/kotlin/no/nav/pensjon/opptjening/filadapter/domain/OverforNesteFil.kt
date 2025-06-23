@@ -5,35 +5,32 @@ import no.nav.pensjon.opptjening.filadapter.remote.filsluse.RemoteFilInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class OverforNesteFilService(
+class OverforNesteFil(
     val filsluseKlient: FilsluseKlient,
     val lagerstatusService: LagerstatusService,
     val prosesserFilService: ProsesserFilService,
 ) {
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(OverforNesteFilService::class.java)
+        private val log: Logger = LoggerFactory.getLogger(OverforNesteFil::class.java)
     }
 
     var utestående: MutableSet<RemoteFilInfo> = mutableSetOf()
-    var alleredeProsessert: MutableSet<RemoteFilInfo> = mutableSetOf()
 
     private fun finnFilerHvisIngenUtestående() {
         if (utestående.isEmpty()) {
             val kandidater = filsluseKlient.scanForFiles("/outbound")
                 .asSequence()
-                .filterNot { it in alleredeProsessert }
                 .filter { it.size > 0L }
                 .toList()
 
             val (alleredeLagret, nyeUtestående) = kandidater.partition { lagerstatusService.erLagret(it.name) }
 
-            log.info("Søkt etter nye kandidatfiler. Fant ${kandidater.size} nye kandidatfiler. Av disse nye var ${alleredeLagret.size} allerede overført, ${nyeUtestående.size} nye filer lagt til for overføring.")
+            log.info("Søker etter nye kandidatfiler, fant antall kandidatfiler: ${kandidater.size}. Av disse er ${alleredeLagret.size} allerede overført, ${nyeUtestående.size} nye filer legges til overføring.")
 
-            alleredeProsessert.addAll(alleredeLagret)
             utestående.addAll(nyeUtestående)
         }
 
-        log.info("Totalt har ${alleredeProsessert.size} filer blitt prosessert. ${utestående.size} venter på overføring.")
+        log.info("Antall utestående filer som venter på å bli overført: ${utestående.size}")
     }
 
     @Synchronized

@@ -1,7 +1,6 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
-import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
-import no.nav.pensjon.opptjening.filadapter.domain.OverforNesteFilService
+import no.nav.pensjon.opptjening.filadapter.domain.OverforNesteFil
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.pensjon.opptjening.filadapter.tasks.FinnNyeFilerTask
 import no.nav.pensjon.opptjening.filadapter.tasks.OverforNesteFilTask
@@ -28,10 +27,10 @@ class ScheduledTasksConfig {
 
     @Bean
     fun overforNesteFilerService(
-        overforNesteFilService: OverforNesteFilService,
+        overforNesteFil: OverforNesteFil,
     ): OverforNesteFilTask {
         return OverforNesteFilTask(
-            overforNesteFilService,
+            overforNesteFil,
         )
     }
 
