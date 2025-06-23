@@ -27,8 +27,6 @@ spec:
       value: "22"
     - name: FILSLUSE_USERNAME
       value: srvPopp
-    - name: JAVA_OPTS
-      value: "-Xms2g -Xmx6g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200"
 
   envFrom:
     - secret: filadapter-sshkey
@@ -76,8 +74,8 @@ spec:
     max: 1
   resources:
     limits:
-      cpu: "2"
-      memory: 9192Mi
+      cpu: "4"
+      memory: 19192Mi
     requests:
-      cpu: 500m
-      memory: 2048Mi
+      cpu: 2000m
+      memory: 12048Mi
