@@ -18,7 +18,6 @@ class OverforNesteFilService(
     var alleredeProsessert: MutableSet<RemoteFilInfo> = mutableSetOf()
 
     private fun finnFilerHvisIngenUtestående() {
-        log.info("sjekker hvor mange filer som er cachet for overføring: ${utestående.size}")
         if (utestående.isEmpty()) {
             val kandidater = filsluseKlient.scanForFiles("/outbound")
                 .asSequence()
@@ -26,15 +25,15 @@ class OverforNesteFilService(
                 .filter { it.size > 0L }
                 .toList()
 
-            log.info("Fant ${kandidater.size} kandidatfiler etter filtrering av prosesserte og tomme filer.")
-
             val (alleredeLagret, nyeUtestående) = kandidater.partition { lagerstatusService.erLagret(it.name) }
+
+            log.info("Fant ${kandidater.size} kandidatfiler. ${alleredeLagret.size} var allerede overført, ${nyeUtestående.size} nye filer lagt til for overføring.")
 
             alleredeProsessert.addAll(alleredeLagret)
             utestående.addAll(nyeUtestående)
-
-            log.info("${alleredeLagret.size} filer var allerede overført. ${nyeUtestående.size} nye filer lagt til for overføring.")
         }
+
+        log.info("Totalt har ${alleredeProsessert.size} filer blitt prosessert. ${utestående.size} venter på overføring.")
     }
 
     @Synchronized
