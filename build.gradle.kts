@@ -22,7 +22,7 @@ plugins {
     val kotlinVersion = "2.1.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "3.5.2"
+    id("org.springframework.boot") version "3.5.3"
     id("com.github.ben-manes.versions") version "0.52.0"
 }
 
