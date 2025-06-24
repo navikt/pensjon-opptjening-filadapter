@@ -13,30 +13,24 @@ jobs:
   dependabot:
     name: Monitor dependencies with Dependabot
     runs-on: ubuntu-latest
-    permissions:
+    permissions: # The Dependency Submission API requires write permission
       contents: write
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4.1.1
-      - name: 'Java 21'
-        uses: actions/setup-java@v4.0.0
+        uses: actions/checkout@v4
+
+      - name: 'Setup Java'
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 21
           cache: 'gradle'
-      - name: Run snapshot action for compileClasspath
+
+      - name: 'Run snapshot action'
         uses: mikepenz/gradle-dependency-submission@v1
         with:
-          gradle-build-configuration: "compileClasspath"
-      - name: Run snapshot action for runtimeClasspath
-        uses: mikepenz/gradle-dependency-submission@v1
-        with:
-          gradle-build-configuration: "runtimeClasspath"
-      - name: Run snapshot action for testCompileClasspath
-        uses: mikepenz/gradle-dependency-submission@v1
-        with:
-          gradle-build-configuration: "testCompileClasspath"
-      - name: Run snapshot action for testRuntimeClasspath
-        uses: mikepenz/gradle-dependency-submission@v1
-        with:
-          gradle-build-configuration: "testRuntimeClasspath"
+          fail-on-error: true
+          gradle-dependency-path: "build.gradle.kts"
+          gradle-build-configuration: compileClasspath
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
