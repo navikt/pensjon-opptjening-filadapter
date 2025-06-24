@@ -5,13 +5,13 @@ import no.nav.pensjon.opptjening.filadapter.remote.filsluse.RemoteFilInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class OverforNesteFil(
+class OverforNesteFilService(
     val filsluseKlient: FilsluseKlient,
     val lagerstatusService: LagerstatusService,
     val prosesserFilService: ProsesserFilService,
 ) {
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(OverforNesteFil::class.java)
+        private val log: Logger = LoggerFactory.getLogger(OverforNesteFilService::class.java)
     }
 
     var utestående: MutableSet<RemoteFilInfo> = mutableSetOf()
