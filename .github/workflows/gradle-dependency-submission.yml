@@ -30,6 +30,6 @@ jobs:
         with:
           fail-on-error: true
           gradle-dependency-path: "build.gradle.kts"
-          gradle-build-configuration: "compileClasspath"
+          gradle-build-configuration: "compileClasspath,runtimeClasspath"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
