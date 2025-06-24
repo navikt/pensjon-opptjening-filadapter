@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
-import no.nav.pensjon.opptjening.filadapter.domain.LagerstatusService
 import no.nav.pensjon.opptjening.filadapter.domain.OverforNesteFilService
 import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
 import no.nav.pensjon.opptjening.filadapter.tasks.FinnNyeFilerTask

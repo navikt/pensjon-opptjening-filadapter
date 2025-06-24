@@ -12,7 +12,7 @@ class OverforNesteFilTask(
     }
 
     @Scheduled(fixedDelay = 30_000) // 30 sekunder
-    fun overforNesteFilService() {
+    fun overforNesteFil() {
         try {
             overforNesteFilService.overforEnUteståendeFil()
         } catch (t: Throwable) {
