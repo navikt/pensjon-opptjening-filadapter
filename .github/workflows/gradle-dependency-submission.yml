@@ -18,18 +18,26 @@ jobs:
     steps:
       # JAVA 21
       - name: 'Checkout'
-        uses: actions/checkout@v4.1.1 # ratchet:actions/checkout@v3
+        uses: actions/checkout@v4.1.1
       - name: 'Java 21'
         uses: actions/setup-java@v4.0.0
         with:
           distribution: 'temurin'
           java-version: 21
           cache: 'gradle'
-      - name: Run snapshot action
+      - name: Run snapshot action for compileClasspath
         uses: mikepenz/gradle-dependency-submission@v1
         with:
           fail-on-error: true
           gradle-dependency-path: "build.gradle.kts"
-          gradle-build-configuration: "compileClasspath,runtimeClasspath"
+          gradle-build-configuration: "compileClasspath"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run snapshot action for runtimeClasspath
+        uses: mikepenz/gradle-dependency-submission@v1
+        with:
+          fail-on-error: true
+          gradle-dependency-path: "build.gradle.kts"
+          gradle-build-configuration: "runtimeClasspath"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
