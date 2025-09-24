@@ -19,7 +19,7 @@ import java.util.*
 internal class PoppKlientTest {
 
     companion object {
-        val WIREMOCK_PORT = 15001
+        const val WIREMOCK_PORT = 15001
 
         @JvmField
         @RegisterExtension
@@ -27,7 +27,7 @@ internal class PoppKlientTest {
             .options(WireMockConfiguration.wireMockConfig().port(WIREMOCK_PORT))
             .build()!!
 
-        fun WireMockExtension.`opprettFilMock`(response: OpprettFilResponse): StubMapping {
+        fun WireMockExtension.opprettFilMock(response: OpprettFilResponse): StubMapping {
             synchronized(this) {
                 return this.stubFor(
                     post(urlPathEqualTo("/fil/opprett"))

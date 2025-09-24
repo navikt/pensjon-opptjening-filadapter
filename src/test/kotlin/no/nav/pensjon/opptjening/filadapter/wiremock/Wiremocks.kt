@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 
-fun WireMockExtension.`lagreFilMock`(): StubMapping {
+fun WireMockExtension.lagreFilMock(): StubMapping {
     synchronized(this) {
         return this.stubFor(
             WireMock.post(WireMock.urlPathEqualTo("/popp/api/fil/opprett"))
@@ -22,7 +22,7 @@ fun WireMockExtension.`lagreFilMock`(): StubMapping {
     }
 }
 
-fun WireMockExtension.`validerFilMock`(): StubMapping {
+fun WireMockExtension.validerFilMock(): StubMapping {
     synchronized(this) {
         return this.stubFor(
             WireMock.post(WireMock.urlPathEqualTo("/popp/api/fil/opprett"))
