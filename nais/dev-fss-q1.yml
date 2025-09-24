@@ -31,7 +31,7 @@ spec:
     - secret: filadapter-sshkey-q1
   image: {{ image }}
   ingresses:
-    - "https://pensjon-opptjening-filadapter.dev-fss-pub.nais.io"
+    - "https://pensjon-opptjening-filadapter-q1.dev-fss-pub.nais.io"
 
   accessPolicy:
     outbound:
