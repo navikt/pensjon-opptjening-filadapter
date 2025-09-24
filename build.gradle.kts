@@ -1,5 +1,7 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -108,4 +110,14 @@ tasks.withType<Test> {
         junitXml.required.set(true)
         html.required.set(true)
     }
+}
+
+tasks.withType<DependencyUpdatesTask>().configureEach {
+    rejectVersionIf {
+        isNonStableVersion(candidate.version)
+    }
+}
+
+fun isNonStableVersion(version: String): Boolean {
+    return listOf("BETA", "RC", "-M", "-rc-", "Alpha").any { version.uppercase().contains(it) }
 }
