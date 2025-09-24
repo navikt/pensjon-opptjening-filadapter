@@ -19,7 +19,7 @@ val jschVersion = "2.27.3"
 val hibernateValidatorVersion = "8.0.1.Final"
 
 val apacheSshdVersion = "2.16.0"
-val okHttpVersion = "4.12.0" // 5.x ikke støttet av nav-token-support
+val okHttpVersion = "5.0.0" // 5.x ikke støttet av nav-token-support
 
 plugins {
     val kotlinVersion = "2.1.20"
@@ -72,7 +72,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     implementation("ch.qos.logback:logback-access:1.5.18")
 
-    // Test - setup
+    testImplementation("com.squareup.okhttp3:mockwebserver:${okHttpVersion}")  // trengs for nav-token-support
+// Test - setup
     testImplementation(kotlin("test"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
