@@ -5,26 +5,27 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val navTokenSupportVersion = "5.0.25"
+val navTokenSupportVersion = "5.0.37"
 val logbackEncoderVersion = "8.1"
 val jacksonVersion = "2.18.2"
 val azureAdClient = "0.0.7"
-val assertjVersion = "3.27.3"
-val wiremockVersion = "3.13.0"
+val assertjVersion = "3.27.6"
+val wiremockVersion = "3.13.1"
 val micrometerRegistryPrometheusVersion = "1.14.3"
-val mockitoKotlinVersion = "5.4.0"
-val jsonUnitVersion = "4.1.0"
-val guavaVersion = "33.4.8-jre"
-val jschVersion = "0.2.26"
+val mockitoKotlinVersion = "6.0.0"
+val jsonUnitVersion = "4.1.1"
+val guavaVersion = "33.5.0-jre"
+val jschVersion = "2.27.3"
 val hibernateValidatorVersion = "8.0.1.Final"
 
-val apacheSshdVersion = "2.15.0"
+val apacheSshdVersion = "2.16.0"
+val okHttpVersion = "4.12.0" // 5.x ikke støttet av nav-token-support
 
 plugins {
     val kotlinVersion = "2.1.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "3.5.3"
+    id("org.springframework.boot") version "3.5.6"
     id("com.github.ben-manes.versions") version "0.52.0"
 }
 
@@ -68,7 +69,7 @@ dependencies {
     implementation("org.apache.sshd:sshd-core:$apacheSshdVersion")
     implementation("org.apache.sshd:sshd-sftp:$apacheSshdVersion")
     implementation("com.github.mwiede:jsch:$jschVersion")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     implementation("ch.qos.logback:logback-access:1.5.18")
 
     // Test - setup
