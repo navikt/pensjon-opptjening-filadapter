@@ -1,7 +1,7 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: pensjon-opptjening-filadapter-q2
+  name: pensjon-opptjening-filadapter
   namespace: pensjonopptjening
   labels:
     team: pensjonopptjening
@@ -32,7 +32,6 @@ spec:
   image: {{ image }}
   ingresses:
     - "https://pensjon-opptjening-filadapter.dev-fss-pub.nais.io"
-    - "https://pensjon-opptjening-filadapter-q2.dev-fss-pub.nais.io"
 
   accessPolicy:
     outbound:
