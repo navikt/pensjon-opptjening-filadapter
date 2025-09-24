@@ -1,7 +1,7 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: pensjon-opptjening-filadapter
+  name: pensjon-opptjening-filadapter-q0
   namespace: pensjonopptjening
   labels:
     team: pensjonopptjening
@@ -18,17 +18,17 @@ spec:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-fss
     - name: POPP_URL
-      value: https://pensjon-popp-q2.dev.intern.nav.no/popp/api
+      value: https://pensjon-popp-q0.dev.intern.nav.no/popp/api
     - name: POPP_API_ID
-      value: dev-fss.pensjonopptjening.pensjon-popp-q2
+      value: dev-fss.pensjonopptjening.pensjon-popp-q0
     - name: FILSLUSE_HOST
       value: filmottak.preprod.local
     - name: FILSLUSE_PORT
       value: "22"
     - name: FILSLUSE_USERNAME
-      value: srvPopp
+      value: srvPoppQ0
   envFrom:
-    - secret: filadapter-sshkey
+    - secret: filadapter-sshkey-q0
   image: {{ image }}
   ingresses:
     - "https://pensjon-opptjening-filadapter.dev-fss-pub.nais.io"

@@ -52,10 +52,34 @@ jobs:
           name: failed-test-results
           path: build/reports/tests/test
 
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss'
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q2)'
         uses: nais/deploy/actions/deploy@v2
         env:
-          RESOURCE: nais/dev-fss.yml
+          RESOURCE: nais/dev-fss-q2.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q1)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q1.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q0)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q0.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q5)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q5.yml
           CLUSTER: dev-fss
           IMAGE: ${{ steps.docker-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}

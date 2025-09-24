@@ -1,0 +1,80 @@
+kind: Application
+apiVersion: nais.io/v1alpha1
+metadata:
+  name: pensjon-opptjening-filadapter-q1
+  namespace: pensjonopptjening
+  labels:
+    team: pensjonopptjening
+spec:
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: false
+      claims:
+        groups:
+          - id: "7ef907b4-ec9f-47dd-ab41-4e54ba32ceb1" #AAD pensjonopptjening testgruppe
+  webproxy: true
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: dev-fss
+    - name: POPP_URL
+      value: https://pensjon-popp-q1.dev.intern.nav.no/popp/api
+    - name: POPP_API_ID
+      value: dev-fss.pensjonopptjening.pensjon-popp-q1
+    - name: FILSLUSE_HOST
+      value: filmottak.preprod.local
+    - name: FILSLUSE_PORT
+      value: "22"
+    - name: FILSLUSE_USERNAME
+      value: srvPoppQ1
+  envFrom:
+    - secret: filadapter-sshkey-q1
+  image: {{ image }}
+  ingresses:
+    - "https://pensjon-opptjening-filadapter.dev-fss-pub.nais.io"
+
+  accessPolicy:
+    outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
+    inbound:
+      rules:
+        - application: pensjon-opptjening-admin-web
+          namespace: pensjonopptjening
+          cluster: dev-gcp
+          permissions:
+            roles:
+              - fil.lagre
+  liveness:
+    path: /actuator/health/liveness
+    port: 8080
+    initialDelay: 50
+  readiness:
+    path: /actuator/health/readiness
+    port: 8080
+    initialDelay: 50
+  prometheus:
+    enabled: true
+    port: "8080"
+    path: /actuator/prometheus
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
+  secureLogs:
+    enabled: true
+  replicas:
+    min: 1
+    max: 1
+  resources:
+    limits:
+      cpu: "2"
+      memory: 19192Mi
+    requests:
+      cpu: 500m
+      memory: 12048Mi
