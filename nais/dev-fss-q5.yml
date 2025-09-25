@@ -40,7 +40,7 @@ spec:
           namespace: nais-system
     inbound:
       rules:
-        - application: pensjon-opptjening-admin-web
+        - application: pensjon-opptjening-admin-web-q5
           namespace: pensjonopptjening
           cluster: dev-gcp
           permissions:
