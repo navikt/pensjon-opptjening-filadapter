@@ -34,7 +34,8 @@ class OverforNesteFilService(
     }
 
     @Synchronized
-    fun overforEnUteståendeFil() {
+    fun overførEnUteståendeFil() {
+        log.info("overforEnUteståendeFil: antall utestående: ${utestående.size}")
         finnFilerHvisIngenUtestående()
         utestående.firstOrNull()?.let { filinfo ->
             val filnavn = filinfo.name

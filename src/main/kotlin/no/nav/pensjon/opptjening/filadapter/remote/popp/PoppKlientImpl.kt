@@ -19,11 +19,11 @@ class PoppKlientImpl(
         private val log = NAVLog(PoppKlientImpl::class)
     }
 
-    override fun opprettFil(oppprettFilRequest: OpprettFilRequest): OpprettFilResponse {
-        log.open.info("Oppretter fil med navn ${oppprettFilRequest.fileName} i POPP")
+    override fun opprettFil(request: OpprettFilRequest): OpprettFilResponse {
+        log.open.info("Oppretter fil med navn ${request.fileName} i POPP")
         return callPopp(
             url = "$baseUrl/fil/opprett",
-            body = oppprettFilRequest,
+            body = request,
             responseType = OpprettFilResponse::class.java,
         )
     }
@@ -79,8 +79,8 @@ class PoppKlientImpl(
             body = body,
         )
         return client.newCall(request).execute().use { response ->
-            val body = response.body?.string()
-            if (body.isNullOrEmpty()) {
+            val body = response.body.string()
+            if (body.isEmpty()) {
                 throw PoppClientException.ResponseWithNoBody(response.code)
             }
             val callResponse =

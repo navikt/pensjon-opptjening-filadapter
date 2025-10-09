@@ -2,6 +2,7 @@ package no.nav.pensjon.opptjening.filadapter.domain
 
 import no.nav.pensjon.opptjening.filadapter.config.CacheConfig
 import no.nav.pensjon.opptjening.filadapter.remote.popp.PoppKlient
+import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
@@ -9,8 +10,14 @@ import org.springframework.stereotype.Service
 class LagerstatusService(
     val poppKlient: PoppKlient,
 ) {
+    companion object {
+        private val log = LoggerFactory.getLogger(LagerstatusService::class.java)
+    }
+
     @Cacheable(CacheConfig.CACHE_NAME)
     fun erLagret(filnavn: String): Boolean {
-        return poppKlient.hentLagerstatus(filnavn).antallLagret > 0
+        val lagerstatus = poppKlient.hentLagerstatus(filnavn)
+        log.info("erLagret(filnavn=$filnavn): lagret:${lagerstatus.antallLagret} lagres:${lagerstatus.antallLagres}")
+        return lagerstatus.antallLagret > 0
     }
 }
