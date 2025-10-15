@@ -54,4 +54,3 @@ jobs:
           RESOURCE: .nais/dev-fss-q2.yaml
           IMAGE: '${{ env.IMAGE }}'
           CLUSTER: dev-gcp
-          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
