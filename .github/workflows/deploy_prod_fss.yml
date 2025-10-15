@@ -1,54 +1,56 @@
-name: 'Bygg og deploy pensjon-opptjening-filadapter til prod-fss'
+name: 'Deploy to prod'
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Which version to deploy (e.g. 2025.10.01-12.55-a1b2c3d)'
+        required: true
+
 jobs:
-  tag_build_and_deploy:
-    name: 'Build, deploy and tag'
+  tagAndDeploy:
+    name: 'Tag and deploy'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       id-token: write
     steps:
-      - name: 'Check available disk space on /tmp (1)'
-        run: df -h /tmp
+      - name: 'Checkout repository'
+        uses: actions/checkout@v5
 
-      - name: 'Pull repo'
-        uses: actions/checkout@v4
-
-      - name: 'Java 21'
-        uses: actions/setup-java@v4
+      - name: 'Fetch NAIS information'
+        uses: nais/login@v0
+        id: nais-login
         with:
-          distribution: 'temurin'
-          java-version: 21
-          cache: 'gradle'
+          team: 'pensjonopptjening'
 
-      - name: 'Build artifact'
+      - name: 'Set variables'
         run: |
-          ./gradlew build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "DATETIME=$(TZ=Europe/Oslo date '+%Y-%m-%d_%H.%M.%S')" >> $GITHUB_ENV
 
-      - name: 'Build and push docker image'
-        uses: nais/docker-build-push@v0
-        id: docker-push
-        with:
-          team: pensjonopptjening
+          echo "REPO=${{ steps.nais-login.outputs.registry }}" >> $GITHUB_ENV
+          echo "IMAGE=${{ steps.nais-login.outputs.registry }}/pensjon-opptjening-filadapter:${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          echo "IMAGE_BASE=${{ steps.nais-login.outputs.registry }}/pensjon-opptjening-filadapter" >> $GITHUB_ENV
 
-      - name: 'Upload test results'
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: failed-test-results
-          path: build/reports/tests/test
+      - name: 'Information'
+        id: info
+        run: |
+          echo "DATETIME: $DATETIME"
+          echo "IMAGE: $IMAGE"
+          echo "IMAGE: $REPO"
+          echo "IMAGE_BASE: $IMAGE_BASE"
 
-      - name: 'Deploy pensjon-opptjening-filadapter to prod-fss'
+      - name: 'Tag image'
+        run: |
+          docker pull "$IMAGE"
+          docker tag "$IMAGE" "$IMAGE_BASE:prod"
+          docker tag "$IMAGE" "$IMAGE_BASE:prod-$DATETIME"
+          docker push --all-tags "$IMAGE_BASE"
+
+      - name: 'Deploy to prod-fss'
         uses: nais/deploy/actions/deploy@v2
         env:
           RESOURCE: nais/prod-fss.yml
+          IMAGE: '${{ env.IMAGE }}'
           CLUSTER: prod-fss
-          IMAGE: ${{ steps.docker-push.outputs.image }}
-          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
