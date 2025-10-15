@@ -53,4 +53,4 @@ jobs:
         env:
           RESOURCE: nais/dev-fss-q2.yml
           IMAGE: '${{ env.IMAGE }}'
-          CLUSTER: dev-gcp
+          CLUSTER: dev-fss
