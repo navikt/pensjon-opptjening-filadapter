@@ -7,26 +7,27 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val navTokenSupportVersion = "5.0.37"
 val logbackEncoderVersion = "8.1"
-val jacksonVersion = "2.18.2"
+val logbackAccessVersion = "1.5.20"
+val jacksonVersion = "2.20.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
-val micrometerRegistryPrometheusVersion = "1.14.3"
-val mockitoKotlinVersion = "6.0.0"
-val jsonUnitVersion = "4.1.1"
+val micrometerRegistryPrometheusVersion = "1.15.5"
+val mockitoKotlinVersion = "6.1.0"
+val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.5.0-jre"
-val jschVersion = "2.27.3"
+val jschVersion = "2.27.5"
 val hibernateValidatorVersion = "8.0.1.Final"
 
 val apacheSshdVersion = "2.16.0"
-val okHttpVersion = "5.0.0" // 5.x ikke støttet av nav-token-support
+val okHttpVersion = "5.2.1"
 
 plugins {
-    val kotlinVersion = "2.1.20"
+    val kotlinVersion = "2.2.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "3.5.6"
-    id("com.github.ben-manes.versions") version "0.52.0"
+    id("org.springframework.boot") version "3.5.7"
+    id("com.github.ben-manes.versions") version "0.53.0"
 }
 
 apply(plugin = "io.spring.dependency-management")
@@ -57,7 +58,6 @@ dependencies {
     implementation("org.springframework:spring-aspects")
 
     implementation("org.springframework.boot:spring-boot-starter-cache")
-    implementation("com.github.ben-manes.caffeine:caffeine")
 
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerRegistryPrometheusVersion")
     implementation("no.nav.security:token-validation-spring:$navTokenSupportVersion")
@@ -70,7 +70,7 @@ dependencies {
     implementation("org.apache.sshd:sshd-sftp:$apacheSshdVersion")
     implementation("com.github.mwiede:jsch:$jschVersion")
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-    implementation("ch.qos.logback:logback-access:1.5.18")
+    implementation("ch.qos.logback:logback-access:$logbackAccessVersion")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:${okHttpVersion}")  // trengs for nav-token-support
 // Test - setup
