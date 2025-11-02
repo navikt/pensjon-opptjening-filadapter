@@ -53,7 +53,7 @@ class AdminWebApiTest {
                 .addHeader("Authorization", "Bearer ${token()}")
                 .build()
         ).execute()
-        assertThat(response.body?.string()).isEqualTo("pong")
+        assertThat(response.body.string()).isEqualTo("pong")
     }
 
     @Test
@@ -65,6 +65,6 @@ class AdminWebApiTest {
                 .addHeader("Authorization", "Bearer ${token()}")
                 .build()
         ).execute()
-        println(response.body?.string())
+        println(response.body.string())
     }
 }

@@ -97,8 +97,8 @@ internal class PoppKlientTest {
     @Test
     fun `kan hente lagerstatus`() {
         val httpResponseBody = LagerstatusResponse(
-            antallLagret = 2,
-            antallLagres = 0,
+            klarMedId = UUID.randomUUID().toString(),
+            uferdigeMedId = emptyList(),
         )
 
         wiremock.givenThat(

@@ -32,11 +32,12 @@ class AdminWebApi(
         return filsluseKlient.scanForFiles("/outbound").map {
             val filnavn = it.name
             val size = it.size
-            val erlagret = lagerstatusService.erLagret(filnavn)
+            val lagerStatus = lagerstatusService.poppKlient.hentLagerstatus(filnavn)
             ListFilerResponse.FilMedStatus(
                 filnavn = filnavn,
                 size = size,
-                lagret = erlagret,
+                lagretMedId = lagerStatus.klarMedId,
+                lagresMedId = lagerStatus.uferdigeMedId,
             )
         }
             .let { ListFilerResponse(it) }

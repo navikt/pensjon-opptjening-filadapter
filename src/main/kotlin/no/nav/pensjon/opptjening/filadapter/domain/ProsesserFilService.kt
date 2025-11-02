@@ -63,7 +63,7 @@ class ProsesserFilService(
         while (!segmenter.isAtEnd()) {
             val segment = segmenter.getSegment()
             val leggTilResponse = poppKlient.lagreFilSegment(
-                lagreFilSegmentRequest = LagreFilSegmentRequest(
+                request = LagreFilSegmentRequest(
                     filId = filId,
                     segmentNo = segment.segmentNo,
                     data = segment.bytes,

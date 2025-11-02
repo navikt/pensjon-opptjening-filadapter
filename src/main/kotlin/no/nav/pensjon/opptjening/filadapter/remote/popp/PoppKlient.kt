@@ -7,6 +7,6 @@ interface PoppKlient {
 
     fun opprettFil(request: OpprettFilRequest): OpprettFilResponse
     fun validerFil(id: UUID): Boolean
-    fun lagreFilSegment(lagreFilSegmentRequest: LagreFilSegmentRequest): LagreFilSegmentResponse
+    fun lagreFilSegment(request: LagreFilSegmentRequest): LagreFilSegmentResponse
     fun hentLagerstatus(filnavn: String): LagerstatusResponse
 }
