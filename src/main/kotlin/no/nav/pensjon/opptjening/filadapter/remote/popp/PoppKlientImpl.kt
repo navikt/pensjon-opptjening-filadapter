@@ -17,6 +17,7 @@ class PoppKlientImpl(
 
     companion object {
         private val log = NAVLog(PoppKlientImpl::class)
+        val client = OkHttpClient.Builder().build()
     }
 
     override fun opprettFil(request: OpprettFilRequest): OpprettFilResponse {
@@ -72,8 +73,6 @@ class PoppKlientImpl(
         body: Any,
         responseType: Class<T>
     ): T {
-        val client = OkHttpClient.Builder()
-            .build()
         val request = buildRequest(
             url = url,
             body = body,
