@@ -60,7 +60,7 @@ class AdminWebApi(
             }
 
             ProsesserFilService.OverførResultat.Status.FINNES_IKKE_I_FILSLUSE -> {
-                ResponseEntity.internalServerError()
+                ResponseEntity.badRequest()
                     .body(OverforFilResponse.feilet(null, "Finnes ikke i filsluse: ${resultat.filnavn}"))
             }
 
