@@ -20,7 +20,6 @@ class OverforNesteFilService(
         if (utestående.isEmpty()) {
             val kandidater = filsluseKlient.scanForFiles("/outbound")
                 .asSequence()
-                .filter { it.size > 0L }
                 .toList()
 
             val (alleredeLagret, nyeUtestående) = kandidater.partition { lagerstatusService.erLagret(it.name) }
