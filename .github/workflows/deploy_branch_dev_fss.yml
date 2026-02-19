@@ -1,10 +1,12 @@
-name: 'Bygg og deploy til dev-fss'
+name: 'Bygg og deploy branch til test environment'
 
 on:
-  push:
-    branches:
-      - main
-      - ny_deploy
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Which test environment to deploy the branch to'
+        default: q2
+        required: true
 
 jobs:
   tag_build_and_deploy:
@@ -65,31 +67,7 @@ jobs:
       - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q2)'
         uses: nais/deploy/actions/deploy@v2
         env:
-          RESOURCE: nais/dev-fss-q2.yml
-          CLUSTER: dev-fss
-          IMAGE: ${{ steps.docker-push.outputs.image }}
-          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
-
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q1)'
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          RESOURCE: nais/dev-fss-q1.yml
-          CLUSTER: dev-fss
-          IMAGE: ${{ steps.docker-push.outputs.image }}
-          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
-
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q0)'
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          RESOURCE: nais/dev-fss-q0.yml
-          CLUSTER: dev-fss
-          IMAGE: ${{ steps.docker-push.outputs.image }}
-          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
-
-      - name: 'Deploy pensjon-opptjening-filadapter to dev-fss (Q5)'
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          RESOURCE: nais/dev-fss-q5.yml
+          RESOURCE: nais/dev-fss-${{ github.event.inputs.environment }}.yml
           CLUSTER: dev-fss
           IMAGE: ${{ steps.docker-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
