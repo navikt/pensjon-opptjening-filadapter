@@ -9,7 +9,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -18,9 +17,6 @@ class AdminWebApiTest {
 
     @Autowired
     private lateinit var adminwebApi: AdminWebApi
-
-    @Autowired
-    private lateinit var restTemplate: TestRestTemplate
 
     @Autowired
     private lateinit var mockOAuth2Server: MockOAuth2Server
@@ -39,7 +35,6 @@ class AdminWebApiTest {
     @Test
     fun `testmiljøet er oppe og fungerer`() {
         assertThat(adminwebApi).isNotNull()
-        assertThat(restTemplate).isNotNull()
         println(port)
         println(mockOAuth2Server)
     }

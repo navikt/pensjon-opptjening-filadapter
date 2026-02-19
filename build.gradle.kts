@@ -5,28 +5,28 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val navTokenSupportVersion = "5.0.37"
-val logbackEncoderVersion = "8.1"
-val logbackAccessVersion = "1.5.22" // 1.5.24 er nyeste, men ikke helt kompatibel
+val navTokenSupportVersion = "6.0.2"
+val logbackEncoderVersion = "9.0"
+val logbackAccessVersion = "1.5.32" // 1.5.24 er nyeste, men ikke helt kompatibel
 val jacksonVersion = "2.21.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
-val micrometerRegistryPrometheusVersion = "1.15.5"
+val micrometerRegistryPrometheusVersion = "1.16.3"
 val mockitoKotlinVersion = "6.1.0"
 val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.5.0-jre"
 val jschVersion = "2.27.7"
-val hibernateValidatorVersion = "8.0.1.Final"
+val hibernateValidatorVersion = "9.1.0.Final"
 
 val apacheSshdVersion = "2.17.1"
 val okHttpVersion = "5.3.2"
 
 plugins {
-    val kotlinVersion = "2.3.0"
+    val kotlinVersion = "2.3.10"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "3.5.10"
+    id("org.springframework.boot") version "4.0.2"
     id("com.github.ben-manes.versions") version "0.53.0"
 }
 
@@ -52,7 +52,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework:spring-aspects")
