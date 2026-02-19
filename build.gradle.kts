@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val navTokenSupportVersion = "5.0.37"
 val logbackEncoderVersion = "8.1"
 val logbackAccessVersion = "1.5.22" // 1.5.24 er nyeste, men ikke helt kompatibel
-val jacksonVersion = "2.20.1"
+val jacksonVersion = "2.21.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
@@ -19,14 +19,14 @@ val guavaVersion = "33.5.0-jre"
 val jschVersion = "2.27.7"
 val hibernateValidatorVersion = "8.0.1.Final"
 
-val apacheSshdVersion = "2.16.0"
+val apacheSshdVersion = "2.17.1"
 val okHttpVersion = "5.3.2"
 
 plugins {
     val kotlinVersion = "2.3.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "3.5.9"
+    id("org.springframework.boot") version "3.5.10"
     id("com.github.ben-manes.versions") version "0.53.0"
 }
 
