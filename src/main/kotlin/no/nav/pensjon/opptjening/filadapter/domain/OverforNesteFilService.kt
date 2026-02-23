@@ -20,6 +20,7 @@ class OverforNesteFilService(
         if (utestående.isEmpty()) {
             val kandidater = filsluseKlient.scanForFiles("/outbound")
                 .asSequence()
+                .filter { erKlar(it) }
                 .toList()
 
             val (alleredeLagret, nyeUtestående) = kandidater.partition { lagerstatusService.erLagret(it.name) }
@@ -59,6 +60,15 @@ class OverforNesteFilService(
                     log.error("overføring av fil feilet: $filnavn")
                 }
             }
+        }
+    }
+
+    fun erKlar(filinfo: RemoteFilInfo): Boolean {
+        return if (filinfo.name.contains("_inprogress")) {
+            log.info("Filen ${filinfo.name} er under opprettelse på filserver, og ignoreres")
+            false
+        } else {
+            true
         }
     }
 }

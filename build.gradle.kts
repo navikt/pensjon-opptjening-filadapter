@@ -18,6 +18,7 @@ val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.5.0-jre"
 val jschVersion = "2.27.7"
 val hibernateValidatorVersion = "9.1.0.Final"
+val jettyVersion = "12.1.6"
 
 val apacheSshdVersion = "2.17.1"
 val okHttpVersion = "5.3.2"
@@ -81,7 +82,10 @@ dependencies {
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.wiremock:wiremock-jetty12:$wiremockVersion")
     testImplementation("net.javacrumbs.json-unit:json-unit-assertj:$jsonUnitVersion")
-}
+
+    // trengs fordi wiremock henger etter på jetty-versjon i forhold til spring 4
+    testImplementation("org.eclipse.jetty:jetty-bom:$jettyVersion")
+    testImplementation("org.eclipse.jetty.ee10:jetty-ee10-bom:${jettyVersion}")}
 
 tasks.test {
     maxParallelForks = 1
