@@ -46,6 +46,12 @@ spec:
           permissions:
             roles:
               - fil.lagre
+        - application: pensjon-opptjening-administrasjon
+          namespace: pensjonopptjening
+          cluster: prod-gcp
+          permissions:
+            roles:
+              - fil.lagre
 
   liveness:
     path: /actuator/health/liveness
@@ -67,8 +73,6 @@ spec:
       destinations:
         - id: loki
         - id: elastic
-  secureLogs:
-    enabled: true
   replicas:
     min: 1
     max: 1
