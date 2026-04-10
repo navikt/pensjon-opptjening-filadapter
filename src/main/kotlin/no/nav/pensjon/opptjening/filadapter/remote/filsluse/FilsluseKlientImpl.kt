@@ -112,7 +112,7 @@ class FilsluseKlientImpl(
     }
 
     private fun mapException(e: Throwable): Throwable {
-        return if ("No such file or directory" == e.message) {
+        return if (e.message != null && e.message!!.contains("No such file or directory")) {
             SftpClientException.NoSuchFileOrDirectory(e)
         } else {
             SftpClientException.Unmapped(e.message, e)
