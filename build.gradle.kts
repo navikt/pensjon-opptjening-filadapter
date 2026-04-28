@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val navTokenSupportVersion = "6.0.6"
 val logbackEncoderVersion = "9.0"
 val logbackAccessVersion = "1.5.32" // 1.5.24 er nyeste, men ikke helt kompatibel
-val jacksonVersion = "2.21.2"
+val jacksonVersion = "2.21.3"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
