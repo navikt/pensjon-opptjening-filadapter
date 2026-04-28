@@ -11,7 +11,7 @@ on:
       - "gradle.properties"
 jobs:
   dependabot:
-    name: Monitor dependencies with Dependabot
+    name: 'Monitor dependencies with Dependabot'
     runs-on: ubuntu-latest
     permissions: # The Dependency Submission API requires write permission
       contents: write
