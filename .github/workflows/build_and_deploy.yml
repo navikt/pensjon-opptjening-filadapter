@@ -1,10 +1,16 @@
-name: 'Bygg og deploy til dev-fss'
+name: 'Bygg og deploy til dev (prod hvis main)'
 
 on:
   push:
     branches:
       - main
       - deployoppsett
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: main
 
 jobs:
   tag_build_and_deploy:
