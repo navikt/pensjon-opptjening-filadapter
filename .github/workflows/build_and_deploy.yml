@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - ny_deploy
+      - deployoppsett
 
 jobs:
   tag_build_and_deploy:
@@ -25,9 +25,16 @@ jobs:
           echo "GIT_COMMIT=$(echo ${{github.sha}} | cut -c 1-7)" >> $GITHUB_ENV
           echo "GIT_BRANCH=$(echo ${{github.ref_name}})" >> $GITHUB_ENV
 
-      - name: 'Configure git reference tag'
+      - name: 'Configure git reference tag (main)'
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "GIT_REF_TAG=git_${GIT_BRANCH}_${GIT_COMMIT}" >> $GITHUB_ENV
+
+      - name: 'Configure git reference tag (branch)'
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "GIT_REF_TAG=git_${GIT_BRANCH}_${GIT_COMMIT}" >> $GITHUB_ENV
+
 
       - name: 'Java 21'
         uses: actions/setup-java@v5
@@ -91,5 +98,14 @@ jobs:
         env:
           RESOURCE: nais/dev-fss-q5.yml
           CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy to prod-fss'
+        if: github.ref == 'refs/heads/main'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/prod-fss.yml
+          CLUSTER: prod-fss
           IMAGE: ${{ steps.docker-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
