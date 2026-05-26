@@ -5,9 +5,9 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val navTokenSupportVersion = "6.0.6"
+val navTokenSupportVersion = "6.0.8"
 val logbackEncoderVersion = "9.0"
-val logbackAccessVersion = "1.5.32" // 1.5.24 er nyeste, men ikke helt kompatibel
+val logbackAccessVersion = "1.5.32"
 val jacksonVersion = "2.21.3"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
@@ -16,7 +16,7 @@ val micrometerRegistryPrometheusVersion = "1.16.5"
 val mockitoKotlinVersion = "6.1.0"
 val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.6.0-jre"
-val jschVersion = "2.28.0"
+val jschVersion = "2.28.2"
 val hibernateValidatorVersion = "9.1.0.Final"
 val jettyVersion = "12.1.6"
 
