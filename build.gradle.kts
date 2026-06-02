@@ -7,8 +7,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val navTokenSupportVersion = "6.0.8"
 val logbackEncoderVersion = "9.0"
-val logbackAccessVersion = "1.5.32"
-val jacksonVersion = "2.21.3"
+val logbackAccessVersion = "1.5.34"
+val jacksonVersion = "2.22.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
@@ -20,8 +20,8 @@ val jschVersion = "2.28.2"
 val hibernateValidatorVersion = "9.1.0.Final"
 val jettyVersion = "12.1.6"
 
-val apacheSshdVersion = "2.17.1"
-val okHttpVersion = "5.3.1"
+val apacheSshdVersion = "2.18.0"
+val okHttpVersion = "5.3.2"
 
 plugins {
     val kotlinVersion = "2.3.21"
