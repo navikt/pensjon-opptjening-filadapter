@@ -32,7 +32,7 @@ jobs:
           echo "GIT_BRANCH=$(echo ${{github.ref_name}})" >> $GITHUB_ENV
 
       - name: 'Configure git reference tag (main)'
-        if: github.ref == 'refs/heads/main'
+        if: ${{github.ref == 'refs/heads/main'}}
         run: |
           echo "GIT_REF_TAG=git_${GIT_BRANCH}_${GIT_COMMIT}" >> $GITHUB_ENV
 
@@ -108,7 +108,7 @@ jobs:
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
 
       - name: 'Deploy to prod-fss'
-        if: github.ref == 'refs/heads/main'
+        if: ${{github.ref == 'refs/heads/main'}}
         uses: nais/deploy/actions/deploy@v2
         env:
           RESOURCE: nais/prod-fss.yml
