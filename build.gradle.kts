@@ -12,22 +12,22 @@ val jacksonVersion = "2.22.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "3.13.1"
-val micrometerRegistryPrometheusVersion = "1.16.5"
+val micrometerRegistryPrometheusVersion = "1.17.0"
 val mockitoKotlinVersion = "6.1.0"
 val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.6.0-jre"
-val jschVersion = "2.28.2"
+val jschVersion = "2.28.3"
 val hibernateValidatorVersion = "9.1.0.Final"
 val jettyVersion = "12.1.6"
 
 val apacheSshdVersion = "2.18.0"
-val okHttpVersion = "5.3.2"
+val okHttpVersion = "5.4.0"
 
 plugins {
-    val kotlinVersion = "2.3.21"
+    val kotlinVersion = "2.4.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "4.0.6"
+    id("org.springframework.boot") version "4.1.0"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("io.spring.dependency-management") version "1.1.7"
 }
