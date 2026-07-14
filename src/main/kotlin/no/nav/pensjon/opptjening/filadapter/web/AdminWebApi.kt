@@ -9,7 +9,10 @@ import no.nav.pensjon.opptjening.filadapter.web.dto.OverforFilRequest
 import no.nav.pensjon.opptjening.filadapter.web.dto.OverforFilResponse
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Protected
@@ -32,12 +35,14 @@ class AdminWebApi(
         return filsluseKlient.scanForFiles("/outbound").map {
             val filnavn = it.name
             val size = it.size
+            val modifiedAt = it.modifiedAt
             val lagerStatus = lagerstatusService.poppKlient.hentLagerstatus(filnavn)
             ListFilerResponse.FilMedStatus(
                 filnavn = filnavn,
                 size = size,
                 lagretMedId = lagerStatus.klarMedId,
                 lagresMedId = lagerStatus.uferdigeMedId,
+                modifiedAt = modifiedAt,
             )
         }
             .let { ListFilerResponse(it) }

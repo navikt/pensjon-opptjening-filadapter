@@ -1,16 +1,22 @@
 package no.nav.pensjon.opptjening.filadapter.config
 
-import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
-import no.nav.pensjon.opptjening.filadapter.remote.filsluse.RemoteFilInfo
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.time.Instant
+import no.nav.pensjon.opptjening.filadapter.remote.filsluse.FilsluseKlient
+import no.nav.pensjon.opptjening.filadapter.remote.filsluse.RemoteFilInfo
 
 class MockFilsluseKlient : FilsluseKlient {
+    companion object {
+        val FAST_TIDSPUNKT: Instant = Instant.parse("2025-03-15T10:30:00Z")
+    }
+
     override fun scanForFiles(remoteDir: String): List<RemoteFilInfo> {
         return listOf(
             RemoteFilInfo(
                 name = "filnavn.txt",
-                10,
+                size = 10,
+                modifiedAt = FAST_TIDSPUNKT,
             )
         )
     }
@@ -18,7 +24,8 @@ class MockFilsluseKlient : FilsluseKlient {
     override fun scanForFil(remoteDir: String, filnavn: String): RemoteFilInfo {
         return RemoteFilInfo(
             name = "filnavn.txt",
-            10,
+            size = 10,
+            modifiedAt = FAST_TIDSPUNKT,
         )
     }
 
@@ -26,7 +33,7 @@ class MockFilsluseKlient : FilsluseKlient {
         return FileDownloadMock()
     }
 
-    class FileDownloadMock: FilsluseKlient.FileDownload {
+    class FileDownloadMock : FilsluseKlient.FileDownload {
         override fun getInputStream(): InputStream {
             return ByteArrayInputStream(ByteArray(0))
         }
