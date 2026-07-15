@@ -1,9 +1,9 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 val navTokenSupportVersion = "6.0.8"
 val logbackEncoderVersion = "9.0"
@@ -11,14 +11,13 @@ val logbackAccessVersion = "1.5.34"
 val jacksonVersion = "2.22.0"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
-val wiremockVersion = "3.13.1"
+val wiremockVersion = "4.0.0-beta.38"
 val micrometerRegistryPrometheusVersion = "1.17.0"
 val mockitoKotlinVersion = "6.1.0"
 val jsonUnitVersion = "5.0.0"
 val guavaVersion = "33.6.0-jre"
 val jschVersion = "2.28.3"
 val hibernateValidatorVersion = "9.1.0.Final"
-val jettyVersion = "12.1.6"
 
 val apacheSshdVersion = "2.18.0"
 val okHttpVersion = "5.4.0"
@@ -29,14 +28,13 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "4.1.0"
     id("com.github.ben-manes.versions") version "0.54.0"
-    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "no.nav.pensjon.opptjening"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -52,6 +50,10 @@ repositories {
 }
 
 dependencies {
+    // Native Gradle BOM-import (erstatter io.spring.dependency-management-pluginet). Constraints fra
+    // spring-boot-dependencies gjelder transitivt til testImplementation (arver fra implementation).
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -79,12 +81,10 @@ dependencies {
     testImplementation("no.nav.security:token-validation-spring-test:$navTokenSupportVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
-    testImplementation("org.wiremock:wiremock-jetty12:$wiremockVersion")
+    testImplementation("org.wiremock:wiremock:$wiremockVersion") // aggregator: httpclient-apache5 factory + core
+    testImplementation("org.wiremock:wiremock-junit5:$wiremockVersion") // WireMockExtension
     testImplementation("net.javacrumbs.json-unit:json-unit-assertj:$jsonUnitVersion")
-
-    // trengs fordi wiremock henger etter på jetty-versjon i forhold til spring 4
-    testImplementation("org.eclipse.jetty:jetty-bom:$jettyVersion")
-    testImplementation("org.eclipse.jetty.ee10:jetty-ee10-bom:${jettyVersion}")}
+}
 
 tasks.test {
     maxParallelForks = 1
@@ -94,7 +94,7 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     compilerOptions {
         freeCompilerArgs.add("-Xjsr305=strict")
-        jvmTarget.set(JvmTarget.JVM_21)
+        jvmTarget.set(JvmTarget.JVM_25)
     }
 }
 

@@ -3,9 +3,10 @@ package no.nav.pensjon.opptjening.filadapter.remote.filsluse
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.Session
-import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
+import java.time.Instant
+import no.nav.pensjon.opptjening.filadapter.log.NAVLog
 
 class FilsluseKlientImpl(
     val host: String,
@@ -32,6 +33,7 @@ class FilsluseKlientImpl(
                     RemoteFilInfo(
                         name = it.filename,
                         size = it.attrs.size,
+                        modifiedAt = Instant.ofEpochSecond(it.attrs.mTime.toLong()),
                     )
                 }
         } catch (t: Throwable) {
@@ -54,6 +56,7 @@ class FilsluseKlientImpl(
                 RemoteFilInfo(
                     name = it.filename,
                     size = it.attrs.size,
+                    modifiedAt = Instant.ofEpochSecond(it.attrs.mTime.toLong()),
                 )
             }
         } catch (e: Throwable) {

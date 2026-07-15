@@ -1,0 +1,92 @@
+name: 'Bygg og deploy'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    permissions:
+      contents: "write"
+      id-token: "write"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v6
+
+      - name: 'Setup Java'
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 25
+          cache: 'gradle'
+
+      - name: 'Setter git-referansetag'
+        run: |
+          echo "GIT_REF_TAG=git_${{github.ref_name}}_$(echo ${{github.sha}} | cut -c 1-7)" >> $GITHUB_ENV
+
+      - name: 'Generate and submit dependency graph'
+        uses: gradle/actions/dependency-submission@v6
+        with:
+          dependency-graph-include-configurations: '^runtimeClasspath$'
+
+      - name: 'Build and test'
+        run: ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Upload test results'
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: failed-test-results
+          path: build/reports/tests/test
+
+      - name: 'Build and push docker image'
+        uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: pensjonopptjening
+          tag: ${{env.GIT_REF_TAG}}
+
+      - name: 'Deploy til dev-fss (Q0)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q0.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy til dev-fss (Q1)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q1.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy til dev-fss (Q2)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q2.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy til dev-fss (Q5)'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/dev-fss-q5.yml
+          CLUSTER: dev-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
+
+      - name: 'Deploy til prod-fss'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          RESOURCE: nais/prod-fss.yml
+          CLUSTER: prod-fss
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
