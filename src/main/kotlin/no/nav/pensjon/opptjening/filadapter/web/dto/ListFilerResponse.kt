@@ -11,5 +11,6 @@ data class ListFilerResponse(
         val lagretMedId: String?,
         val lagresMedId: List<String>,
         val modifiedAt: Instant,
+        val prosessert: Boolean,
     )
 }
