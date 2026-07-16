@@ -43,6 +43,7 @@ class AdminWebApi(
                 lagretMedId = lagerStatus.klarMedId,
                 lagresMedId = lagerStatus.uferdigeMedId,
                 modifiedAt = modifiedAt,
+                prosessert = lagerStatus.prosessert,
             )
         }
             .let { ListFilerResponse(it) }
