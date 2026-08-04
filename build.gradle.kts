@@ -5,29 +5,29 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-val navTokenSupportVersion = "6.0.8"
+val navTokenSupportVersion = "6.0.11"
 val logbackEncoderVersion = "9.0"
 val logbackAccessVersion = "1.5.34"
-val jacksonVersion = "2.22.0"
+val jacksonVersion = "2.22.1"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "4.0.0-beta.38"
 val micrometerRegistryPrometheusVersion = "1.17.0"
-val mockitoKotlinVersion = "6.1.0"
-val jsonUnitVersion = "5.0.0"
+val mockitoKotlinVersion = "6.3.0"
+val jsonUnitVersion = "6.0.1"
 val guavaVersion = "33.6.0-jre"
-val jschVersion = "2.28.3"
-val hibernateValidatorVersion = "9.1.0.Final"
+val jschVersion = "2.28.6"
+val hibernateValidatorVersion = "9.1.3.Final"
 
-val apacheSshdVersion = "2.18.0"
+val apacheSshdVersion = "2.19.0"
 val okHttpVersion = "5.4.0"
 
 plugins {
-    val kotlinVersion = "2.4.0"
+    val kotlinVersion = "2.4.10"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "4.1.0"
-    id("com.github.ben-manes.versions") version "0.54.0"
+    id("io.github.ben-manes.versions") version "0.59.0"
 }
 
 group = "no.nav.pensjon.opptjening"
