@@ -84,7 +84,8 @@ jobs:
           IMAGE: ${{ steps.docker-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-push.outputs.telemetry }}
 
-      - name: 'Deploy til prod-fss'
+      - name: 'Deploy til prod-fss (prod hvis main)'
+        if: ${{github.ref == 'refs/heads/main' }}
         uses: nais/deploy/actions/deploy@v2
         env:
           RESOURCE: nais/prod-fss.yml
