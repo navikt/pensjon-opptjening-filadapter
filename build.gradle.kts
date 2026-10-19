@@ -7,17 +7,17 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 val navTokenSupportVersion = "6.0.13"
 val logbackEncoderVersion = "9.0"
-val logbackAccessVersion = "1.6.4"
-val jacksonVersion = "2.22.3"
+val logbackAccessVersion = "1.6.5"
+val jacksonVersion = "2.22.4"
 val azureAdClient = "0.0.7"
 val assertjVersion = "3.27.6"
 val wiremockVersion = "4.0.0-beta.38"
 val micrometerRegistryPrometheusVersion = "1.17.0"
 val mockitoKotlinVersion = "6.4.0"
-val jsonUnitVersion = "6.2.0"
+val jsonUnitVersion = "6.3.0"
 val guavaVersion = "33.7.2-jre"
-val jschVersion = "2.28.7"
-val hibernateValidatorVersion = "9.1.4.Final"
+val jschVersion = "2.28.8"
+val hibernateValidatorVersion = "9.1.5.Final"
 
 val apacheSshdVersion = "2.20.0"
 val okHttpVersion = "5.5.0"
@@ -27,7 +27,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "4.1.1"
-    id("io.github.ben-manes.versions") version "0.64.0"
+    id("io.github.ben-manes.versions") version "0.66.0"
 }
 
 group = "no.nav.pensjon.opptjening"
