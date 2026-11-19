@@ -29,11 +29,11 @@ class PoppKlientImpl(
         )
     }
 
-    override fun lagreFilSegment(lagreFilSegmentRequest: LagreFilSegmentRequest): LagreFilSegmentResponse {
-        log.open.info("Lagrer filsegment for filId ${lagreFilSegmentRequest.filId} i POPP")
+    override fun lagreFilSegment(request: LagreFilSegmentRequest): LagreFilSegmentResponse {
+        log.open.info("Lagrer filsegment for filId ${request.filId} i POPP")
         return callPopp(
             url = "$baseUrl/fil/leggtil",
-            body = lagreFilSegmentRequest,
+            body = request,
             responseType = LagreFilSegmentResponse::class.java,
         )
     }
