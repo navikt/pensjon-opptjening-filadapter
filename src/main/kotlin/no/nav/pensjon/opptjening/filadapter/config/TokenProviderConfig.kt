@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import pensjon.opptjening.azure.ad.client.AzureAdConfig
 import pensjon.opptjening.azure.ad.client.AzureAdTokenProvider
-import pensjon.opptjening.azure.ad.client.AzureAdVariableConfig
 import pensjon.opptjening.azure.ad.client.TokenProvider
+import pensjon.opptjening.azure.ad.client.config.AzureAdConfig
+import pensjon.opptjening.azure.ad.client.config.AzureAdVariableConfig
 
 @Configuration
 @Profile("dev-fss", "prod-fss")
