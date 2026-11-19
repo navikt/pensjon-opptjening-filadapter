@@ -5,29 +5,31 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-val navTokenSupportVersion = "6.0.13"
+val navTokenSupportVersion = "7.0.2"
 val logbackEncoderVersion = "9.0"
-val logbackAccessVersion = "1.6.5"
-val jacksonVersion = "2.22.4"
-val azureAdClient = "0.0.7"
+val logbackAccessVersion = "1.6.8"
+val jacksonVersion = "2.23.0"
+val azureAdClient = "0.0.9"
 val assertjVersion = "3.27.6"
-val wiremockVersion = "4.0.0-beta.38"
-val micrometerRegistryPrometheusVersion = "1.17.0"
+val wiremockVersion = "4.0.0-beta.44"
+val micrometerRegistryPrometheusVersion = "1.18.0"
 val mockitoKotlinVersion = "6.4.0"
-val jsonUnitVersion = "6.3.0"
-val guavaVersion = "33.7.2-jre"
+val jsonUnitVersion = "6.4.1"
+val guavaVersion = "33.8.0-jre"
 val jschVersion = "2.28.8"
-val hibernateValidatorVersion = "9.1.5.Final"
+val hibernateValidatorVersion = "9.2.0.Final"
 
-val apacheSshdVersion = "2.20.0"
-val okHttpVersion = "5.5.0"
+val apacheSshdVersion = "2.20.1"
+val okHttpVersion = "5.5.1"
+
+val kotlinTestVersion = "2.4.20"
 
 plugins {
-    val kotlinVersion = "2.4.20"
+    val kotlinVersion = "2.4.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    id("org.springframework.boot") version "4.1.1"
-    id("io.github.ben-manes.versions") version "0.66.0"
+    id("org.springframework.boot") version "4.2.0"
+    id("io.github.ben-manes.versions") version "0.67.0"
 }
 
 group = "no.nav.pensjon.opptjening"
@@ -84,6 +86,10 @@ dependencies {
     testImplementation("org.wiremock:wiremock:$wiremockVersion") // aggregator: httpclient-apache5 factory + core
     testImplementation("org.wiremock:wiremock-junit5:$wiremockVersion") // WireMockExtension
     testImplementation("net.javacrumbs.json-unit:json-unit-assertj:$jsonUnitVersion")
+
+    // Usikker på hvorfor denne er nødvendig, men den følger bare nesten kotlin-versjonen, og i siste bygg ble også kotlin-versjonen
+    // overstyrt fra 2.4.20 til 2.4.21 (uskker på fra hvor, muligens spring-boot)
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinTestVersion")
 }
 
 tasks.test {
